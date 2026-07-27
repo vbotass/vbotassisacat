@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head> <link rel="manifest" href="./manifest.json" />
+<head> <link rel="manifest" href="/vbotassisacat/manifest.json" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Study Tasks Manager</title>
@@ -708,7 +708,7 @@
   
     if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('./sw.js')
+      navigator.serviceWorker.register('/vbotassisacat/sw.js')
         .then(function(registration) {
           console.log('SW registered successfully:', registration);
         })
