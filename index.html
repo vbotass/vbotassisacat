@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Study Tasks Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Georgia&display=swap" rel="stylesheet" />
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Study Tasks · Nothing Tech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Georgia&display=swap" rel="stylesheet" />
     <style>
         * {
             margin: 0;
@@ -114,8 +121,7 @@
             left: 2px;
             top: -1px;
         }
-        .add-card .long-row .total-input,
-        .add-card .long-row .time-input {
+        .add-card .long-row .total-input {
             width: 70px;
             background: #ffffff;
             border: 1px solid #d0d0d0;
@@ -126,12 +132,8 @@
             border-radius: 0;
             font-family: 'Inter', sans-serif;
         }
-        .add-card .long-row .total-input:focus,
-        .add-card .long-row .time-input:focus {
+        .add-card .long-row .total-input:focus {
             border-color: #e60000;
-        }
-        .add-card .long-row .time-input {
-            width: 80px;
         }
         .add-btn {
             width: 100%;
@@ -366,7 +368,7 @@
         <div class="add-card">
             <div class="row">
                 <input type="text" id="subjectInput" placeholder="Subject" />
-                <input type="text" id="timeInput" placeholder="Target time" />
+                <input type="text" id="timeInput" placeholder="Target time / total time" />
             </div>
             <div class="long-row">
                 <label>
@@ -374,8 +376,6 @@
                     Long-term task
                 </label>
                 <input type="number" id="totalCount" class="total-input" placeholder="Lessons" min="1" value="10" disabled />
-                <span style="color:#999;font-size:13px;">Total time</span>
-                <input type="text" id="totalTimeInput" class="time-input" placeholder="e.g. 3h" disabled />
             </div>
             <button class="add-btn" id="addTaskBtn">Add Task</button>
         </div>
@@ -388,7 +388,6 @@
         </div>
     </div>
 
-    <!-- Celebration overlay -->
     <div class="celebration-overlay" id="celebrationOverlay">
         <div class="bg"></div>
         <div class="text">
@@ -409,7 +408,6 @@
             const timeInput = document.getElementById('timeInput');
             const isLongTask = document.getElementById('isLongTask');
             const totalCount = document.getElementById('totalCount');
-            const totalTimeInput = document.getElementById('totalTimeInput');
             const addBtn = document.getElementById('addTaskBtn');
             const dateDisplay = document.getElementById('dateDisplay');
             const celebrationEl = document.getElementById('celebrationOverlay');
@@ -508,8 +506,9 @@
                         let perLessonHours = 0;
                         let remainingHours = 0;
                         let totalTimeHours = 0;
-                        if (task.totalTime) {
-                            totalTimeHours = parseTimeToHours(task.totalTime);
+                        // 从 task.time 读取总时间（已合并）
+                        if (task.time) {
+                            totalTimeHours = parseTimeToHours(task.time);
                             if (total > 0) {
                                 perLessonHours = totalTimeHours / total;
                                 remainingHours = perLessonHours * remaining;
@@ -517,7 +516,7 @@
                         }
                         const perLessonStr = perLessonHours > 0 ? formatHours(perLessonHours) : '--';
                         const remainingStr = remainingHours > 0 ? formatHours(remainingHours) : '--';
-                        const totalTimeStr = task.totalTime || '--';
+                        const totalTimeStr = task.time || '--';
 
                         html += `
                             <div class="task-item ${doneClass}" data-index="${i}">
@@ -548,6 +547,7 @@
                             </div>
                         `;
                     } else {
+                        // 普通任务
                         html += `
                             <div class="task-item ${doneClass}" data-index="${i}">
                                 <div class="top">
@@ -633,19 +633,17 @@
                 const time = timeInput.value.trim();
                 const isLong = isLongTask.checked;
                 let total = 0;
-                let totalTimeStr = '';
                 if (isLong) {
                     total = parseInt(totalCount.value) || 0;
-                    totalTimeStr = totalTimeInput.value.trim();
                     if (total <= 0) {
                         alert('Please enter a valid number of lessons (at least 1)');
                         return;
                     }
-                    if (!totalTimeStr) {
+                    if (!time) {
                         alert('Please enter total time (e.g. 3h)');
                         return;
                     }
-                    const hours = parseTimeToHours(totalTimeStr);
+                    const hours = parseTimeToHours(time);
                     if (hours <= 0) {
                         alert('Please enter a valid time (e.g. 3h or 90min)');
                         return;
@@ -661,11 +659,10 @@
                     isLong: isLong,
                     total: isLong ? total : 0,
                     completed: 0,
-                    done: false,
-                    totalTime: isLong ? totalTimeStr : ''
+                    done: false
                 };
                 tasks.push(task);
-                addLog(subject, isLong ? `Created long-term task (${total} lessons, ${totalTimeStr})` : 'Created task');
+                addLog(subject, isLong ? `Created long-term task (${total} lessons, ${time})` : 'Created task');
                 saveData();
                 renderTasks();
                 subjectInput.value = '';
@@ -673,15 +670,12 @@
                 isLongTask.checked = false;
                 totalCount.value = '';
                 totalCount.disabled = true;
-                totalTimeInput.value = '';
-                totalTimeInput.disabled = true;
                 subjectInput.focus();
             }
 
             isLongTask.addEventListener('change', function() {
                 const checked = this.checked;
                 totalCount.disabled = !checked;
-                totalTimeInput.disabled = !checked;
                 if (checked) {
                     totalCount.focus();
                 }
