@@ -2,7 +2,7 @@
   "name": "Study Tasks",
   "short_name": "Tasks",
   "description": "A clean task tracker for studying",
-  "start_url": "/",
+  "start_url": "/vbotassisacat/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#e60000",
