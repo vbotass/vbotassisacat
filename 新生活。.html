@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Study Tasks Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Georgia&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: #000000;
+            padding: 20px 16px 60px;
+        }
+        .app {
+            max-width: 420px;
+            width: 100%;
+            background: #ffffff;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 8px 0 16px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .header h1 {
+            font-family: 'Georgia', serif;
+            font-weight: 400;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+            color: #000;
+        }
+        .header .date {
+            font-size: 14px;
+            color: #999;
+            letter-spacing: 0.3px;
+        }
+        .add-card {
+            background: #f7f7f7;
+            padding: 18px 16px 16px;
+            margin-top: 20px;
+            border: 1px solid #e5e5e5;
+        }
+        .add-card .row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .add-card .row input,
+        .add-card .row select {
+            flex: 1;
+            min-width: 100px;
+            background: #ffffff;
+            border: 1px solid #d0d0d0;
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #000;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            border-radius: 0;
+        }
+        .add-card .row input:focus {
+            border-color: #e60000;
+        }
+        .add-card .row input::placeholder {
+            color: #bbb;
+        }
+        .add-card .long-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 6px 0 10px;
+            flex-wrap: wrap;
+        }
+        .add-card .long-row label {
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .add-card .long-row input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #e60000;
+            background: #fff;
+            border: 1px solid #d0d0d0;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            position: relative;
+            cursor: pointer;
+        }
+        .add-card .long-row input[type="checkbox"]:checked {
+            background: #e60000;
+        }
+        .add-card .long-row input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: #fff;
+            font-size: 14px;
+            left: 2px;
+            top: -1px;
+        }
+        .add-card .long-row .total-input,
+        .add-card .long-row .time-input {
+            width: 70px;
+            background: #ffffff;
+            border: 1px solid #d0d0d0;
+            padding: 6px 8px;
+            font-size: 14px;
+            color: #000;
+            outline: none;
+            border-radius: 0;
+            font-family: 'Inter', sans-serif;
+        }
+        .add-card .long-row .total-input:focus,
+        .add-card .long-row .time-input:focus {
+            border-color: #e60000;
+        }
+        .add-card .long-row .time-input {
+            width: 80px;
+        }
+        .add-btn {
+            width: 100%;
+            padding: 12px;
+            background: #000000;
+            border: none;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+            border-radius: 999px;
+            margin-top: 4px;
+        }
+        .add-btn:hover {
+            background: #222;
+        }
+        .task-list {
+            margin-top: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .task-item {
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .task-item .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-item .top .info {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .task-item .top .info .subject {
+            font-size: 16px;
+            font-weight: 500;
+            color: #000;
+        }
+        .task-item .top .info .time-target {
+            font-size: 13px;
+            color: #888;
+        }
+        .task-item .top .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .task-item .top .actions button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 6px;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.2s;
+        }
+        .task-item .top .actions .done-btn {
+            color: #e60000;
+            font-size: 20px;
+        }
+        .task-item .top .actions .done-btn:hover {
+            color: #cc0000;
+        }
+        .task-item .top .actions .delete-btn {
+            color: #bbb;
+            font-size: 18px;
+        }
+        .task-item .top .actions .delete-btn:hover {
+            color: #e60000;
+        }
+        .progress-area {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        .progress-bar-track {
+            width: 100%;
+            height: 4px;
+            background: #e5e5e5;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #e60000;
+            width: 0%;
+            border-radius: 999px;
+            transition: width 0.3s;
+        }
+        .progress-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            color: #555;
+            flex-wrap: wrap;
+            gap: 4px 0;
+        }
+        .progress-detail .left {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .progress-detail .right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .progress-detail .right .progress-btn {
+            background: none;
+            border: 1px solid #d0d0d0;
+            color: #333;
+            padding: 2px 14px;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 999px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+        .progress-detail .right .progress-btn:hover {
+            border-color: #e60000;
+            color: #000;
+        }
+        .task-item.done .subject {
+            text-decoration: line-through;
+            color: #aaa;
+        }
+        .celebration-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .celebration-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .celebration-overlay .bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(230, 0, 0, 0.08);
+            backdrop-filter: blur(2px);
+        }
+        .celebration-overlay .text {
+            position: relative;
+            font-family: 'Georgia', serif;
+            font-size: 32px;
+            color: #000;
+            background: #fff;
+            padding: 32px 48px;
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+            letter-spacing: 2px;
+            animation: popIn 0.4s ease;
+        }
+        .celebration-overlay .text .sub {
+            font-size: 14px;
+            color: #888;
+            font-family: 'Inter', sans-serif;
+            margin-top: 8px;
+            letter-spacing: 0px;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .log-section {
+            margin-top: 36px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 18px;
+        }
+        .log-section h2 {
+            font-family: 'Georgia', serif;
+            font-weight: 400;
+            font-size: 18px;
+            color: #888;
+            letter-spacing: 0.3px;
+            margin-bottom: 12px;
+        }
+        .log-entry {
+            font-size: 13px;
+            color: #888;
+            padding: 4px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+        }
+        .log-entry .time {
+            color: #bbb;
+        }
+        .log-entry .action {
+            color: #333;
+        }
+        .empty-msg {
+            color: #ccc;
+            font-size: 14px;
+            text-align: center;
+            padding: 24px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <div class="header">
+            <h1>Study Tasks</h1>
+            <span class="date" id="dateDisplay"></span>
+        </div>
+
+        <div class="add-card">
+            <div class="row">
+                <input type="text" id="subjectInput" placeholder="Subject" />
+                <input type="text" id="timeInput" placeholder="Target time" />
+            </div>
+            <div class="long-row">
+                <label>
+                    <input type="checkbox" id="isLongTask" />
+                    Long-term task
+                </label>
+                <input type="number" id="totalCount" class="total-input" placeholder="Lessons" min="1" value="10" disabled />
+                <span style="color:#999;font-size:13px;">Total time</span>
+                <input type="text" id="totalTimeInput" class="time-input" placeholder="e.g. 3h" disabled />
+            </div>
+            <button class="add-btn" id="addTaskBtn">Add Task</button>
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+
+        <div class="log-section">
+            <h2>Study Log</h2>
+            <div id="logContainer"></div>
+        </div>
+    </div>
+
+    <!-- Celebration overlay -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="bg"></div>
+        <div class="text">
+            <div>✦ Done</div>
+            <div class="sub">All lessons completed</div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            let tasks = [];
+            let logs = [];
+            let celebrationTimer = null;
+
+            const taskList = document.getElementById('taskList');
+            const logContainer = document.getElementById('logContainer');
+            const subjectInput = document.getElementById('subjectInput');
+            const timeInput = document.getElementById('timeInput');
+            const isLongTask = document.getElementById('isLongTask');
+            const totalCount = document.getElementById('totalCount');
+            const totalTimeInput = document.getElementById('totalTimeInput');
+            const addBtn = document.getElementById('addTaskBtn');
+            const dateDisplay = document.getElementById('dateDisplay');
+            const celebrationEl = document.getElementById('celebrationOverlay');
+
+            const now = new Date();
+            dateDisplay.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+            function loadData() {
+                try {
+                    const saved = localStorage.getItem('nothing_tasks');
+                    if (saved) tasks = JSON.parse(saved);
+                    const savedLogs = localStorage.getItem('nothing_logs');
+                    if (savedLogs) logs = JSON.parse(savedLogs);
+                } catch (e) { /* ignore */ }
+            }
+
+            function saveData() {
+                localStorage.setItem('nothing_tasks', JSON.stringify(tasks));
+                localStorage.setItem('nothing_logs', JSON.stringify(logs));
+            }
+
+            function addLog(subject, action) {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                logs.push({ subject, action, time: timeStr });
+                if (logs.length > 200) logs.shift();
+                saveData();
+                renderLogs();
+            }
+
+            function renderLogs() {
+                if (logs.length === 0) {
+                    logContainer.innerHTML = '<div class="empty-msg">No records yet</div>';
+                    return;
+                }
+                let html = '';
+                const recent = logs.slice(-20).reverse();
+                for (const log of recent) {
+                    html += `<div class="log-entry">
+                        <span class="action">${log.subject} · ${log.action}</span>
+                        <span class="time">${log.time}</span>
+                    </div>`;
+                }
+                logContainer.innerHTML = html;
+            }
+
+            function triggerCelebration() {
+                if (celebrationTimer) clearTimeout(celebrationTimer);
+                celebrationEl.classList.add('active');
+                celebrationTimer = setTimeout(() => {
+                    celebrationEl.classList.remove('active');
+                    celebrationTimer = null;
+                }, 2500);
+            }
+
+            function parseTimeToHours(str) {
+                str = str.trim().toLowerCase();
+                if (str.endsWith('h')) {
+                    const val = parseFloat(str.replace('h', '').trim());
+                    return isNaN(val) ? 0 : val;
+                }
+                if (str.endsWith('min')) {
+                    const val = parseFloat(str.replace('min', '').trim());
+                    return isNaN(val) ? 0 : val / 60;
+                }
+                const num = parseFloat(str);
+                return isNaN(num) ? 0 : num;
+            }
+
+            function formatHours(hours) {
+                if (hours < 0.01) return '0min';
+                if (hours < 1) return Math.round(hours * 60) + 'min';
+                const h = Math.floor(hours);
+                const m = Math.round((hours - h) * 60);
+                if (m === 0) return h + 'h';
+                return h + 'h ' + m + 'min';
+            }
+
+            function renderTasks() {
+                if (tasks.length === 0) {
+                    taskList.innerHTML = '<div class="empty-msg">No tasks yet</div>';
+                    return;
+                }
+                let html = '';
+                for (let i = 0; i < tasks.length; i++) {
+                    const task = tasks[i];
+                    const isDone = task.done || false;
+                    const isLong = task.isLong || false;
+                    const doneClass = isDone ? 'done' : '';
+
+                    if (isLong) {
+                        const total = task.total || 0;
+                        const completed = task.completed || 0;
+                        const progress = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
+                        const remaining = total - completed;
+                        let perLessonHours = 0;
+                        let remainingHours = 0;
+                        let totalTimeHours = 0;
+                        if (task.totalTime) {
+                            totalTimeHours = parseTimeToHours(task.totalTime);
+                            if (total > 0) {
+                                perLessonHours = totalTimeHours / total;
+                                remainingHours = perLessonHours * remaining;
+                            }
+                        }
+                        const perLessonStr = perLessonHours > 0 ? formatHours(perLessonHours) : '--';
+                        const remainingStr = remainingHours > 0 ? formatHours(remainingHours) : '--';
+                        const totalTimeStr = task.totalTime || '--';
+
+                        html += `
+                            <div class="task-item ${doneClass}" data-index="${i}">
+                                <div class="top">
+                                    <div class="info">
+                                        <span class="subject">${task.subject}</span>
+                                        <span class="time-target">${totalTimeStr} total · ${perLessonStr} / lesson</span>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
+                                    </div>
+                                </div>
+                                <div class="progress-area">
+                                    <div class="progress-bar-track">
+                                        <div class="progress-bar-fill" style="width:${progress}%"></div>
+                                    </div>
+                                    <div class="progress-detail">
+                                        <div class="left">
+                                            <span>${completed}/${total} done</span>
+                                            <span>${remaining} left</span>
+                                            <span>est. ${remainingStr} remaining</span>
+                                        </div>
+                                        <div class="right">
+                                            <button class="progress-btn" data-index="${i}" data-action="increment">+1 lesson</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        html += `
+                            <div class="task-item ${doneClass}" data-index="${i}">
+                                <div class="top">
+                                    <div class="info">
+                                        <span class="subject">${task.subject}</span>
+                                        <span class="time-target">${task.time || ''}</span>
+                                    </div>
+                                    <div class="actions">
+                                        <button class="done-btn" data-index="${i}" data-action="toggle">${isDone ? '↺' : '✓'}</button>
+                                        <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+                taskList.innerHTML = html;
+
+                document.querySelectorAll('[data-action="toggle"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const idx = parseInt(this.dataset.index);
+                        toggleTask(idx);
+                    });
+                });
+                document.querySelectorAll('[data-action="increment"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const idx = parseInt(this.dataset.index);
+                        incrementTask(idx);
+                    });
+                });
+                document.querySelectorAll('[data-action="delete"]').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const idx = parseInt(this.dataset.index);
+                        deleteTask(idx);
+                    });
+                });
+            }
+
+            function toggleTask(index) {
+                if (index < 0 || index >= tasks.length) return;
+                const task = tasks[index];
+                if (task.isLong) return;
+                task.done = !task.done;
+                if (task.done) {
+                    addLog(task.subject, 'Completed');
+                } else {
+                    addLog(task.subject, 'Uncompleted');
+                }
+                saveData();
+                renderTasks();
+            }
+
+            function incrementTask(index) {
+                if (index < 0 || index >= tasks.length) return;
+                const task = tasks[index];
+                if (!task.isLong) return;
+                if (task.completed < task.total) {
+                    task.completed++;
+                    addLog(task.subject, `1 lesson done (${task.completed}/${task.total})`);
+                    saveData();
+                    renderTasks();
+                    if (task.completed === task.total) {
+                        triggerCelebration();
+                    }
+                } else {
+                    triggerCelebration();
+                }
+            }
+
+            function deleteTask(index) {
+                if (index < 0 || index >= tasks.length) return;
+                const task = tasks[index];
+                if (confirm(`Delete task "${task.subject}"?`)) {
+                    tasks.splice(index, 1);
+                    addLog(task.subject, 'Deleted');
+                    saveData();
+                    renderTasks();
+                }
+            }
+
+            function addTask() {
+                const subject = subjectInput.value.trim();
+                const time = timeInput.value.trim();
+                const isLong = isLongTask.checked;
+                let total = 0;
+                let totalTimeStr = '';
+                if (isLong) {
+                    total = parseInt(totalCount.value) || 0;
+                    totalTimeStr = totalTimeInput.value.trim();
+                    if (total <= 0) {
+                        alert('Please enter a valid number of lessons (at least 1)');
+                        return;
+                    }
+                    if (!totalTimeStr) {
+                        alert('Please enter total time (e.g. 3h)');
+                        return;
+                    }
+                    const hours = parseTimeToHours(totalTimeStr);
+                    if (hours <= 0) {
+                        alert('Please enter a valid time (e.g. 3h or 90min)');
+                        return;
+                    }
+                }
+                if (!subject) {
+                    alert('Please enter a subject');
+                    return;
+                }
+                const task = {
+                    subject: subject,
+                    time: time || '',
+                    isLong: isLong,
+                    total: isLong ? total : 0,
+                    completed: 0,
+                    done: false,
+                    totalTime: isLong ? totalTimeStr : ''
+                };
+                tasks.push(task);
+                addLog(subject, isLong ? `Created long-term task (${total} lessons, ${totalTimeStr})` : 'Created task');
+                saveData();
+                renderTasks();
+                subjectInput.value = '';
+                timeInput.value = '';
+                isLongTask.checked = false;
+                totalCount.value = '';
+                totalCount.disabled = true;
+                totalTimeInput.value = '';
+                totalTimeInput.disabled = true;
+                subjectInput.focus();
+            }
+
+            isLongTask.addEventListener('change', function() {
+                const checked = this.checked;
+                totalCount.disabled = !checked;
+                totalTimeInput.disabled = !checked;
+                if (checked) {
+                    totalCount.focus();
+                }
+            });
+
+            addBtn.addEventListener('click', addTask);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && document.activeElement.tagName === 'INPUT') {
+                    addTask();
+                }
+            });
+
+            celebrationEl.addEventListener('click', function() {
+                this.classList.remove('active');
+                if (celebrationTimer) { clearTimeout(celebrationTimer);
+                    celebrationTimer = null; }
+            });
+
+            loadData();
+            renderTasks();
+            renderLogs();
+        })();
+    </script>
+</body>
+</html>
