@@ -9,7 +9,7 @@
     <p>正在注册 Service Worker...</p>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('./sw.js')
                 .then(function(registration) {
                     document.body.innerHTML += '<p style="color:green;">✅ Service Worker 注册成功！</p>';
                     console.log('SW registered:', registration);
