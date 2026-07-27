@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PWA 诊断</title>
+</head>
+<body>
+    <h1>PWA 诊断页面</h1>
+    <p>如果你能看到这个页面，说明直接访问是正常的。</p>
+    <p>当前页面地址：<span id="url"></span></p>
+    <p>如果 PWA 打开后看到这个页面，说明 PWA 的起始 URL 指向了正确的位置。</p>
+    <p>如果 PWA 打开后看到 GitHub 404，说明起始 URL 指向了其他位置。</p>
+
+    <script>
+        document.getElementById('url').textContent = window.location.href;
+        console.log('诊断页面加载成功，当前 URL:', window.location.href);
+    </script>
+</body>
+</html>
