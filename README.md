@@ -1,0 +1,2 @@
+# vbotassisacat
+trash bin
