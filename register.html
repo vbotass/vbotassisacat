@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PWA 注册测试</title>
+</head>
+<body>
+    <h1>PWA 注册测试</h1>
+    <p>正在注册 Service Worker...</p>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    document.body.innerHTML += '<p style="color:green;">✅ Service Worker 注册成功！</p>';
+                    console.log('SW registered:', registration);
+                })
+                .catch(function(error) {
+                    document.body.innerHTML += '<p style="color:red;">❌ 注册失败：' + error + '</p>';
+                    console.error('SW registration failed:', error);
+                });
+        } else {
+            document.body.innerHTML += '<p style="color:orange;">⚠️ 浏览器不支持 Service Worker</p>';
+        }
+    </script>
+</body>
+</html>
