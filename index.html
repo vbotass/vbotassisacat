@@ -3,42 +3,45 @@
 <head> <link rel="manifest" href="/vbotassisacat/manifest.json" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Study Tasks Manager</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Georgia&display=swap" rel="stylesheet" />
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Study Tasks · Nothing Tech</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Georgia&display=swap" rel="stylesheet" />
+    <link rel="manifest" href="/vbotassisacat/manifest.json" />
     <style>
+        /* ... 所有样式与上一版完全相同 ... */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+        html,
         body {
+            height: 100%;
+            overflow: hidden;
             background: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
             font-family: 'Inter', -apple-system, sans-serif;
             color: #000000;
-            padding: 20px 16px 60px;
+            touch-action: pan-y;
         }
         .app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
             max-width: 420px;
-            width: 100%;
+            margin: 0 auto;
             background: #ffffff;
+            overflow: hidden;
+            position: relative;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            padding: 8px 0 16px;
+            padding: 12px 16px 8px 16px;
             border-bottom: 1px solid #e5e5e5;
+            flex-shrink: 0;
+            background: #ffffff;
+            z-index: 5;
         }
         .header h1 {
             font-family: 'Georgia', serif;
@@ -52,10 +55,66 @@
             color: #999;
             letter-spacing: 0.3px;
         }
+
+        .page-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 0 4px;
+            flex-shrink: 0;
+            background: #ffffff;
+            z-index: 5;
+        }
+        .page-indicator .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #ddd;
+            transition: background 0.3s;
+        }
+        .page-indicator .dot.active {
+            background: #e60000;
+        }
+
+        .carousel {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+            touch-action: pan-y;
+        }
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1);
+            will-change: transform;
+        }
+        .carousel-page {
+            flex: 0 0 100%;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 0 16px 20px 16px;
+            overscroll-behavior: contain;
+            background: #ffffff;
+        }
+        .carousel-page::-webkit-scrollbar {
+            width: 3px;
+        }
+        .carousel-page::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        .carousel-page::-webkit-scrollbar-thumb {
+            background: #ddd;
+            border-radius: 999px;
+        }
+
+        /* ===== 任务列表页 ===== */
         .add-card {
             background: #f7f7f7;
-            padding: 18px 16px 16px;
-            margin-top: 20px;
+            padding: 16px 16px 14px;
+            margin-top: 4px;
             border: 1px solid #e5e5e5;
         }
         .add-card .row {
@@ -64,8 +123,7 @@
             margin-bottom: 10px;
             flex-wrap: wrap;
         }
-        .add-card .row input,
-        .add-card .row select {
+        .add-card .row input {
             flex: 1;
             min-width: 100px;
             background: #ffffff;
@@ -76,6 +134,7 @@
             outline: none;
             font-family: 'Inter', sans-serif;
             border-radius: 0;
+            touch-action: manipulation;
         }
         .add-card .row input:focus {
             border-color: #e60000;
@@ -109,6 +168,7 @@
             -webkit-appearance: none;
             position: relative;
             cursor: pointer;
+            touch-action: manipulation;
         }
         .add-card .long-row input[type="checkbox"]:checked {
             background: #e60000;
@@ -131,6 +191,7 @@
             outline: none;
             border-radius: 0;
             font-family: 'Inter', sans-serif;
+            touch-action: manipulation;
         }
         .add-card .long-row .total-input:focus {
             border-color: #e60000;
@@ -148,24 +209,27 @@
             letter-spacing: 0.5px;
             transition: background 0.2s;
             border-radius: 999px;
-            margin-top: 4px;
+            margin-top: 2px;
+            touch-action: manipulation;
         }
         .add-btn:hover {
             background: #222;
         }
+
         .task-list {
-            margin-top: 28px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
+            margin-top: 16px;
         }
         .task-item {
             background: #fafafa;
             border: 1px solid #e5e5e5;
-            padding: 14px 16px;
+            padding: 12px 14px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
+            touch-action: manipulation;
         }
         .task-item .top {
             display: flex;
@@ -175,51 +239,56 @@
         .task-item .top .info {
             display: flex;
             align-items: baseline;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         .task-item .top .info .subject {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 500;
             color: #000;
         }
         .task-item .top .info .time-target {
-            font-size: 13px;
+            font-size: 12px;
             color: #888;
         }
         .task-item .top .actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         .task-item .top .actions button {
             background: none;
             border: none;
-            font-size: 18px;
+            font-size: 17px;
             cursor: pointer;
-            padding: 4px 6px;
+            padding: 2px 4px;
             font-family: 'Inter', sans-serif;
             transition: color 0.2s;
+            touch-action: manipulation;
         }
         .task-item .top .actions .done-btn {
             color: #e60000;
-            font-size: 20px;
+            font-size: 19px;
         }
         .task-item .top .actions .done-btn:hover {
             color: #cc0000;
         }
         .task-item .top .actions .delete-btn {
             color: #bbb;
-            font-size: 18px;
+            font-size: 17px;
         }
         .task-item .top .actions .delete-btn:hover {
             color: #e60000;
         }
+        .task-item.done .subject {
+            text-decoration: line-through;
+            color: #aaa;
+        }
         .progress-area {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            margin-top: 4px;
+            gap: 3px;
+            margin-top: 3px;
         }
         .progress-bar-track {
             width: 100%;
@@ -239,40 +308,248 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 12px;
             color: #555;
             flex-wrap: wrap;
-            gap: 4px 0;
+            gap: 2px 0;
         }
         .progress-detail .left {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .progress-detail .right {
-            display: flex;
-            align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         .progress-detail .right .progress-btn {
             background: none;
             border: 1px solid #d0d0d0;
             color: #333;
-            padding: 2px 14px;
-            font-size: 12px;
+            padding: 1px 12px;
+            font-size: 11px;
             cursor: pointer;
             border-radius: 999px;
             font-family: 'Inter', sans-serif;
             transition: all 0.2s;
+            touch-action: manipulation;
         }
         .progress-detail .right .progress-btn:hover {
             border-color: #e60000;
             color: #000;
         }
-        .task-item.done .subject {
-            text-decoration: line-through;
-            color: #aaa;
+
+        /* ===== 学习记录 ===== */
+        .log-section {
+            margin-top: 20px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 14px;
+            padding-bottom: 10px;
         }
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .log-header h2 {
+            font-family: 'Georgia', serif;
+            font-weight: 400;
+            font-size: 17px;
+            color: #888;
+            letter-spacing: 0.3px;
+        }
+        .log-header .log-delete-toggle {
+            background: none;
+            border: 1px solid #d0d0d0;
+            padding: 2px 14px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            color: #888;
+            cursor: pointer;
+            border-radius: 999px;
+            transition: all 0.2s;
+            touch-action: manipulation;
+        }
+        .log-header .log-delete-toggle:hover {
+            border-color: #e60000;
+            color: #000;
+        }
+        .log-header .log-delete-toggle.active {
+            border-color: #e60000;
+            color: #e60000;
+        }
+
+        .log-entry {
+            font-size: 12px;
+            color: #888;
+            padding: 3px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log-entry .log-left {
+            display: flex;
+            justify-content: space-between;
+            flex: 1;
+            align-items: center;
+        }
+        .log-entry .log-left .action {
+            color: #333;
+        }
+        .log-entry .log-left .time {
+            color: #bbb;
+            margin-left: 12px;
+        }
+        .log-entry .log-delete-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 0 4px 0 10px;
+            transition: color 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: none;
+            touch-action: manipulation;
+        }
+        .log-entry .log-delete-btn:hover {
+            color: #e60000;
+        }
+        .log-entry .log-delete-btn.show {
+            display: inline;
+        }
+
+        .empty-msg {
+            color: #ccc;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* ===== 计时器页 ===== */
+        .timer-page {
+            padding-top: 4px;
+        }
+        .timer-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 20px;
+        }
+        .timer-tabs .tab {
+            flex: 1;
+            padding: 12px 0 10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 400;
+            color: #999;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.5px;
+            touch-action: manipulation;
+        }
+        .timer-tabs .tab.active {
+            color: #000;
+            border-bottom-color: #e60000;
+        }
+        .timer-display {
+            font-family: 'Georgia', serif;
+            font-size: 52px;
+            text-align: center;
+            padding: 16px 0 20px;
+            letter-spacing: 2px;
+            color: #000;
+            font-variant-numeric: tabular-nums;
+        }
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .timer-controls button {
+            padding: 8px 28px;
+            border: 1px solid #d0d0d0;
+            background: #ffffff;
+            color: #000;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 999px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            min-width: 70px;
+            touch-action: manipulation;
+        }
+        .timer-controls button:hover {
+            border-color: #e60000;
+        }
+        .timer-controls button.primary {
+            background: #000000;
+            color: #ffffff;
+            border-color: #000000;
+        }
+        .timer-controls button.primary:hover {
+            background: #222;
+            border-color: #222;
+        }
+        .timer-controls button.danger {
+            border-color: #e60000;
+            color: #e60000;
+        }
+        .timer-controls button.danger:hover {
+            background: #e60000;
+            color: #ffffff;
+        }
+        .timer-set {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: center;
+        }
+        .timer-set input {
+            width: 60px;
+            padding: 6px 8px;
+            border: 1px solid #d0d0d0;
+            background: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            border-radius: 0;
+            color: #000;
+            touch-action: manipulation;
+        }
+        .timer-set input:focus {
+            border-color: #e60000;
+        }
+        .timer-set span {
+            font-size: 16px;
+            color: #888;
+            font-family: 'Inter', sans-serif;
+        }
+        .lap-list {
+            margin-top: 12px;
+            border-top: 1px solid #e5e5e5;
+            padding-top: 10px;
+        }
+        .lap-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #555;
+            padding: 3px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .lap-item .lap-num {
+            color: #999;
+        }
+        .lap-item .lap-time {
+            font-family: 'Georgia', serif;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* 庆祝 */
         .celebration-overlay {
             position: fixed;
             top: 0;
@@ -323,68 +600,25 @@
             0% { transform: scale(0.92); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .log-section {
-            margin-top: 36px;
-            border-top: 1px solid #e5e5e5;
-            padding-top: 18px;
-        }
-        .log-section h2 {
-            font-family: 'Georgia', serif;
-            font-weight: 400;
-            font-size: 18px;
-            color: #888;
-            letter-spacing: 0.3px;
-            margin-bottom: 12px;
-        }
-        .log-entry {
-            font-size: 13px;
-            color: #888;
-            padding: 4px 0;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            justify-content: space-between;
-        }
-        .log-entry .time {
-            color: #bbb;
-        }
-        .log-entry .action {
-            color: #333;
-        }
-        .empty-msg {
-            color: #ccc;
-            font-size: 14px;
-            text-align: center;
-            padding: 24px 0;
-        }
     </style>
 </head>
 <body>
-    <div class="app">
+    <div class="app" id="app">
         <div class="header">
             <h1>Study Tasks</h1>
             <span class="date" id="dateDisplay"></span>
         </div>
 
-        <div class="add-card">
-            <div class="row">
-                <input type="text" id="subjectInput" placeholder="Subject" />
-                <input type="text" id="timeInput" placeholder="Target time" />
-            </div>
-            <div class="long-row">
-                <label>
-                    <input type="checkbox" id="isLongTask" />
-                    Long-term task
-                </label>
-                <input type="number" id="totalCount" class="total-input" placeholder="Lessons" min="1" value="10" disabled />
-            </div>
-            <button class="add-btn" id="addTaskBtn">Add Task</button>
+        <div class="page-indicator" id="pageIndicator">
+            <span class="dot active" data-page="0"></span>
+            <span class="dot" data-page="1"></span>
         </div>
 
-        <div class="task-list" id="taskList"></div>
-
-        <div class="log-section">
-            <h2>Study Log</h2>
-            <div id="logContainer"></div>
+        <div class="carousel" id="carousel">
+            <div class="carousel-track" id="track">
+                <div class="carousel-page" id="taskPage"></div>
+                <div class="carousel-page timer-page" id="timerPage"></div>
+            </div>
         </div>
     </div>
 
@@ -398,23 +632,33 @@
 
     <script>
         (function() {
+            // ================================================================
+            // 数据
+            // ================================================================
             let tasks = [];
             let logs = [];
             let celebrationTimer = null;
+            let logDeleteMode = false;
 
-            const taskList = document.getElementById('taskList');
-            const logContainer = document.getElementById('logContainer');
-            const subjectInput = document.getElementById('subjectInput');
-            const timeInput = document.getElementById('timeInput');
-            const isLongTask = document.getElementById('isLongTask');
-            const totalCount = document.getElementById('totalCount');
-            const addBtn = document.getElementById('addTaskBtn');
+            // ================================================================
+            // DOM
+            // ================================================================
+            const track = document.getElementById('track');
+            const taskPage = document.getElementById('taskPage');
+            const timerPage = document.getElementById('timerPage');
+            const dots = document.querySelectorAll('.dot');
             const dateDisplay = document.getElementById('dateDisplay');
             const celebrationEl = document.getElementById('celebrationOverlay');
+
+            let currentPage = 0;
+            let isTransitioning = false;
 
             const now = new Date();
             dateDisplay.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
+            // ================================================================
+            // 数据持久化
+            // ================================================================
             function loadData() {
                 try {
                     const saved = localStorage.getItem('nothing_tasks');
@@ -429,40 +673,28 @@
                 localStorage.setItem('nothing_logs', JSON.stringify(logs));
             }
 
+            // ================================================================
+            // 日志
+            // ================================================================
             function addLog(subject, action) {
                 const now = new Date();
                 const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 logs.push({ subject, action, time: timeStr });
                 if (logs.length > 200) logs.shift();
                 saveData();
-                renderLogs();
+                renderTasks();
             }
 
-            function renderLogs() {
-                if (logs.length === 0) {
-                    logContainer.innerHTML = '<div class="empty-msg">No records yet</div>';
-                    return;
-                }
-                let html = '';
-                const recent = logs.slice(-20).reverse();
-                for (const log of recent) {
-                    html += `<div class="log-entry">
-                        <span class="action">${log.subject} · ${log.action}</span>
-                        <span class="time">${log.time}</span>
-                    </div>`;
-                }
-                logContainer.innerHTML = html;
+            function deleteLog(index) {
+                if (index < 0 || index >= logs.length) return;
+                logs.splice(index, 1);
+                saveData();
+                renderTasks();
             }
 
-            function triggerCelebration() {
-                if (celebrationTimer) clearTimeout(celebrationTimer);
-                celebrationEl.classList.add('active');
-                celebrationTimer = setTimeout(() => {
-                    celebrationEl.classList.remove('active');
-                    celebrationTimer = null;
-                }, 2500);
-            }
-
+            // ================================================================
+            // 工具
+            // ================================================================
             function parseTimeToHours(str) {
                 str = str.trim().toLowerCase();
                 if (str.endsWith('h')) {
@@ -486,86 +718,157 @@
                 return h + 'h ' + m + 'min';
             }
 
+            function formatTime(seconds) {
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+            }
+
+            function formatLapTime(seconds) {
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                const cs = Math.floor((seconds % 1) * 100);
+                return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0') + '.' + String(cs).padStart(2, '0');
+            }
+
+            function triggerCelebration() {
+                if (celebrationTimer) clearTimeout(celebrationTimer);
+                celebrationEl.classList.add('active');
+                celebrationTimer = setTimeout(() => {
+                    celebrationEl.classList.remove('active');
+                    celebrationTimer = null;
+                }, 2500);
+            }
+
+            // ================================================================
+            // 渲染任务
+            // ================================================================
             function renderTasks() {
-                if (tasks.length === 0) {
-                    taskList.innerHTML = '<div class="empty-msg">No tasks yet</div>';
-                    return;
-                }
                 let html = '';
-                for (let i = 0; i < tasks.length; i++) {
-                    const task = tasks[i];
-                    const isDone = task.done || false;
-                    const isLong = task.isLong || false;
-                    const doneClass = isDone ? 'done' : '';
 
-                    if (isLong) {
-                        const total = task.total || 0;
-                        const completed = task.completed || 0;
-                        const progress = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
-                        const remaining = total - completed;
-                        let perLessonHours = 0;
-                        let remainingHours = 0;
-                        let totalTimeHours = 0;
-                        // 从 task.time 读取总时间（已合并）
-                        if (task.time) {
-                            totalTimeHours = parseTimeToHours(task.time);
-                            if (total > 0) {
-                                perLessonHours = totalTimeHours / total;
-                                remainingHours = perLessonHours * remaining;
+                html += `
+                    <div class="add-card">
+                        <div class="row">
+                            <input type="text" id="subjectInput" placeholder="Subject" />
+                            <input type="text" id="timeInput" placeholder="Target time / total time" />
+                        </div>
+                        <div class="long-row">
+                            <label>
+                                <input type="checkbox" id="isLongTask" />
+                                Long-term task
+                            </label>
+                            <input type="number" id="totalCount" class="total-input" placeholder="Lessons" min="1" value="10" disabled />
+                        </div>
+                        <button class="add-btn" id="addTaskBtn">Add Task</button>
+                    </div>
+                `;
+
+                if (tasks.length === 0) {
+                    html += `<div class="empty-msg">No tasks yet</div>`;
+                } else {
+                    html += `<div class="task-list">`;
+                    for (let i = 0; i < tasks.length; i++) {
+                        const task = tasks[i];
+                        const isDone = task.done || false;
+                        const isLong = task.isLong || false;
+                        const doneClass = isDone ? 'done' : '';
+
+                        if (isLong) {
+                            const total = task.total || 0;
+                            const completed = task.completed || 0;
+                            const progress = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
+                            const remaining = total - completed;
+                            let perLessonHours = 0;
+                            let remainingHours = 0;
+                            if (task.time) {
+                                const totalTimeHours = parseTimeToHours(task.time);
+                                if (total > 0) {
+                                    perLessonHours = totalTimeHours / total;
+                                    remainingHours = perLessonHours * remaining;
+                                }
                             }
-                        }
-                        const perLessonStr = perLessonHours > 0 ? formatHours(perLessonHours) : '--';
-                        const remainingStr = remainingHours > 0 ? formatHours(remainingHours) : '--';
-                        const totalTimeStr = task.time || '--';
+                            const perLessonStr = perLessonHours > 0 ? formatHours(perLessonHours) : '--';
+                            const remainingStr = remainingHours > 0 ? formatHours(remainingHours) : '--';
+                            const totalTimeStr = task.time || '--';
 
-                        html += `
-                            <div class="task-item ${doneClass}" data-index="${i}">
-                                <div class="top">
-                                    <div class="info">
-                                        <span class="subject">${task.subject}</span>
-                                        <span class="time-target">${totalTimeStr} total · ${perLessonStr} / lesson</span>
-                                    </div>
-                                    <div class="actions">
-                                        <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
-                                    </div>
-                                </div>
-                                <div class="progress-area">
-                                    <div class="progress-bar-track">
-                                        <div class="progress-bar-fill" style="width:${progress}%"></div>
-                                    </div>
-                                    <div class="progress-detail">
-                                        <div class="left">
-                                            <span>${completed}/${total} done</span>
-                                            <span>${remaining} left</span>
-                                            <span>est. ${remainingStr} remaining</span>
+                            html += `
+                                <div class="task-item ${doneClass}" data-index="${i}">
+                                    <div class="top">
+                                        <div class="info">
+                                            <span class="subject">${task.subject}</span>
+                                            <span class="time-target">${totalTimeStr} total · ${perLessonStr} / lesson</span>
                                         </div>
-                                        <div class="right">
-                                            <button class="progress-btn" data-index="${i}" data-action="increment">+1 lesson</button>
+                                        <div class="actions">
+                                            <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
                                         </div>
                                     </div>
+                                    <div class="progress-area">
+                                        <div class="progress-bar-track">
+                                            <div class="progress-bar-fill" style="width:${progress}%"></div>
+                                        </div>
+                                        <div class="progress-detail">
+                                            <div class="left">
+                                                <span>${completed}/${total} done</span>
+                                                <span>${remaining} left</span>
+                                                <span>est. ${remainingStr} remaining</span>
+                                            </div>
+                                            <div class="right">
+                                                <button class="progress-btn" data-index="${i}" data-action="increment">+1 lesson</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                    } else {
-                        // 普通任务
+                            `;
+                        } else {
+                            html += `
+                                <div class="task-item ${doneClass}" data-index="${i}">
+                                    <div class="top">
+                                        <div class="info">
+                                            <span class="subject">${task.subject}</span>
+                                            <span class="time-target">${task.time || ''}</span>
+                                        </div>
+                                        <div class="actions">
+                                            <button class="done-btn" data-index="${i}" data-action="toggle">${isDone ? '↺' : '✓'}</button>
+                                            <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    }
+                    html += `</div>`;
+                }
+
+                html += `<div class="log-section">`;
+                html += `
+                    <div class="log-header">
+                        <h2>Study Log</h2>
+                        <button class="log-delete-toggle${logDeleteMode ? ' active' : ''}" id="logDeleteToggle">${logDeleteMode ? '✕ Done' : 'Delete'}</button>
+                    </div>
+                `;
+                if (logs.length === 0) {
+                    html += `<div class="empty-msg">No records yet</div>`;
+                } else {
+                    const recent = logs.slice(-30).reverse();
+                    for (let i = 0; i < recent.length; i++) {
+                        const log = recent[i];
+                        const idx = logs.length - 1 - i;
                         html += `
-                            <div class="task-item ${doneClass}" data-index="${i}">
-                                <div class="top">
-                                    <div class="info">
-                                        <span class="subject">${task.subject}</span>
-                                        <span class="time-target">${task.time || ''}</span>
-                                    </div>
-                                    <div class="actions">
-                                        <button class="done-btn" data-index="${i}" data-action="toggle">${isDone ? '↺' : '✓'}</button>
-                                        <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
-                                    </div>
+                            <div class="log-entry" data-log-index="${idx}">
+                                <div class="log-left">
+                                    <span class="action">${log.subject} · ${log.action}</span>
+                                    <span class="time">${log.time}</span>
                                 </div>
+                                <button class="log-delete-btn${logDeleteMode ? ' show' : ''}" data-log-index="${idx}">✕</button>
                             </div>
                         `;
                     }
                 }
-                taskList.innerHTML = html;
+                html += `</div>`;
 
+                taskPage.innerHTML = html;
+
+                // 绑定事件
                 document.querySelectorAll('[data-action="toggle"]').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         const idx = parseInt(this.dataset.index);
@@ -584,18 +887,47 @@
                         deleteTask(idx);
                     });
                 });
+
+                document.querySelectorAll('.log-delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.logIndex);
+                        deleteLog(idx);
+                    });
+                });
+
+                const toggleBtn = document.getElementById('logDeleteToggle');
+                if (toggleBtn) {
+                    toggleBtn.addEventListener('click', function() {
+                        logDeleteMode = !logDeleteMode;
+                        renderTasks();
+                    });
+                }
+
+                const addBtn = document.getElementById('addTaskBtn');
+                if (addBtn) addBtn.addEventListener('click', addTask);
+
+                const longCheck = document.getElementById('isLongTask');
+                if (longCheck) {
+                    longCheck.addEventListener('change', function() {
+                        const checked = this.checked;
+                        const tc = document.getElementById('totalCount');
+                        if (tc) tc.disabled = !checked;
+                        if (checked && tc) tc.focus();
+                    });
+                }
             }
 
+            // ================================================================
+            // 任务操作
+            // ================================================================
             function toggleTask(index) {
                 if (index < 0 || index >= tasks.length) return;
                 const task = tasks[index];
                 if (task.isLong) return;
                 task.done = !task.done;
-                if (task.done) {
-                    addLog(task.subject, 'Completed');
-                } else {
-                    addLog(task.subject, 'Uncompleted');
-                }
+                if (task.done) addLog(task.subject, 'Completed');
+                else addLog(task.subject, 'Uncompleted');
                 saveData();
                 renderTasks();
             }
@@ -609,9 +941,7 @@
                     addLog(task.subject, `1 lesson done (${task.completed}/${task.total})`);
                     saveData();
                     renderTasks();
-                    if (task.completed === task.total) {
-                        triggerCelebration();
-                    }
+                    if (task.completed === task.total) triggerCelebration();
                 } else {
                     triggerCelebration();
                 }
@@ -629,21 +959,29 @@
             }
 
             function addTask() {
-                const subject = subjectInput.value.trim();
-                const time = timeInput.value.trim();
-                const isLong = isLongTask.checked;
+                const sub = document.getElementById('subjectInput');
+                const time = document.getElementById('timeInput');
+                const isLong = document.getElementById('isLongTask');
+                const tc = document.getElementById('totalCount');
+
+                if (!sub || !time || !isLong || !tc) return;
+
+                const subject = sub.value.trim();
+                const timeVal = time.value.trim();
+                const long = isLong.checked;
                 let total = 0;
-                if (isLong) {
-                    total = parseInt(totalCount.value) || 0;
+
+                if (long) {
+                    total = parseInt(tc.value) || 0;
                     if (total <= 0) {
                         alert('Please enter a valid number of lessons (at least 1)');
                         return;
                     }
-                    if (!time) {
+                    if (!timeVal) {
                         alert('Please enter total time (e.g. 3h)');
                         return;
                     }
-                    const hours = parseTimeToHours(time);
+                    const hours = parseTimeToHours(timeVal);
                     if (hours <= 0) {
                         alert('Please enter a valid time (e.g. 3h or 90min)');
                         return;
@@ -653,40 +991,407 @@
                     alert('Please enter a subject');
                     return;
                 }
+
                 const task = {
                     subject: subject,
-                    time: time || '',
-                    isLong: isLong,
-                    total: isLong ? total : 0,
+                    time: timeVal || '',
+                    isLong: long,
+                    total: long ? total : 0,
                     completed: 0,
                     done: false
                 };
                 tasks.push(task);
-                addLog(subject, isLong ? `Created long-term task (${total} lessons, ${time})` : 'Created task');
+                addLog(subject, long ? `Created long-term task (${total} lessons, ${timeVal})` : 'Created task');
                 saveData();
                 renderTasks();
-                subjectInput.value = '';
-                timeInput.value = '';
-                isLongTask.checked = false;
-                totalCount.value = '';
-                totalCount.disabled = true;
-                subjectInput.focus();
+                sub.value = '';
+                time.value = '';
+                isLong.checked = false;
+                tc.value = '';
+                tc.disabled = true;
+                sub.focus();
             }
 
-            isLongTask.addEventListener('change', function() {
-                const checked = this.checked;
-                totalCount.disabled = !checked;
-                if (checked) {
-                    totalCount.focus();
+            // ================================================================
+            // 计时器
+            // ================================================================
+            let timerMode = 'countdown';
+            let timerRunning = false;
+            let timerInterval = null;
+            let countdownSeconds = 0;
+            let countdownTotal = 0;
+            let stopwatchSeconds = 0;
+            let laps = [];
+            let lapCount = 0;
+
+            function renderTimer() {
+                const mode = timerMode;
+                let html = '';
+
+                html += `
+                    <div class="timer-tabs">
+                        <div class="tab ${mode === 'countdown' ? 'active' : ''}" data-mode="countdown">Timer</div>
+                        <div class="tab ${mode === 'stopwatch' ? 'active' : ''}" data-mode="stopwatch">Stopwatch</div>
+                    </div>
+                `;
+
+                if (mode === 'countdown') {
+                    html += `
+                        <div class="timer-display" id="timerDisplay">${formatTime(countdownSeconds)}</div>
+                        <div class="timer-set" id="timerSet">
+                            <input type="number" id="setMinutes" placeholder="0" min="0" value="0" />
+                            <span>min</span>
+                            <input type="number" id="setSeconds" placeholder="0" min="0" max="59" value="0" />
+                            <span>sec</span>
+                        </div>
+                        <div class="timer-controls">
+                            <button id="timerStartBtn" class="primary">${timerRunning ? 'Pause' : 'Start'}</button>
+                            <button id="timerResetBtn">Reset</button>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="timer-display" id="timerDisplay">${formatLapTime(stopwatchSeconds)}</div>
+                        <div class="timer-controls">
+                            <button id="timerStartBtn" class="primary">${timerRunning ? 'Pause' : 'Start'}</button>
+                            <button id="timerLapBtn" ${!timerRunning ? 'disabled style="opacity:0.4;"' : ''}>Lap</button>
+                            <button id="timerResetBtn">Reset</button>
+                        </div>
+                        <div class="lap-list" id="lapList">
+                            ${laps.map((l, i) => `
+                                <div class="lap-item">
+                                    <span class="lap-num">Lap ${i + 1}</span>
+                                    <span class="lap-time">${formatLapTime(l)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                timerPage.innerHTML = html;
+
+                document.querySelectorAll('.timer-tabs .tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        const newMode = this.dataset.mode;
+                        if (newMode === timerMode) return;
+                        if (timerRunning) {
+                            clearInterval(timerInterval);
+                            timerRunning = false;
+                        }
+                        timerMode = newMode;
+                        if (timerMode === 'countdown') {
+                            countdownSeconds = countdownTotal || 0;
+                        }
+                        renderTimer();
+                    });
+                });
+
+                const startBtn = document.getElementById('timerStartBtn');
+                const resetBtn = document.getElementById('timerResetBtn');
+
+                if (startBtn) startBtn.addEventListener('click', toggleTimer);
+                if (resetBtn) resetBtn.addEventListener('click', resetTimer);
+
+                if (mode === 'countdown') {
+                    const setMin = document.getElementById('setMinutes');
+                    const setSec = document.getElementById('setSeconds');
+                    if (setMin && setSec) {
+                        setMin.addEventListener('change', updateCountdownSet);
+                        setSec.addEventListener('change', updateCountdownSet);
+                        if (!timerRunning && countdownTotal > 0) {
+                            const mins = Math.floor(countdownTotal / 60);
+                            const secs = Math.floor(countdownTotal % 60);
+                            setMin.value = mins;
+                            setSec.value = secs;
+                        }
+                    }
+                }
+
+                if (mode === 'stopwatch') {
+                    const lapBtn = document.getElementById('timerLapBtn');
+                    if (lapBtn) {
+                        lapBtn.addEventListener('click', function() {
+                            if (timerRunning) {
+                                laps.push(stopwatchSeconds);
+                                lapCount++;
+                                renderTimer();
+                            }
+                        });
+                    }
+                }
+            }
+
+            function updateCountdownSet() {
+                if (timerRunning) return;
+                const mins = parseInt(document.getElementById('setMinutes').value) || 0;
+                const secs = parseInt(document.getElementById('setSeconds').value) || 0;
+                countdownTotal = mins * 60 + secs;
+                countdownSeconds = countdownTotal;
+                const disp = document.getElementById('timerDisplay');
+                if (disp) disp.textContent = formatTime(countdownSeconds);
+            }
+
+            function toggleTimer() {
+                if (timerMode === 'countdown') {
+                    if (countdownTotal <= 0 && !timerRunning) {
+                        const mins = parseInt(document.getElementById('setMinutes')?.value) || 0;
+                        const secs = parseInt(document.getElementById('setSeconds')?.value) || 0;
+                        countdownTotal = mins * 60 + secs;
+                        countdownSeconds = countdownTotal;
+                        if (countdownTotal <= 0) return;
+                        const disp = document.getElementById('timerDisplay');
+                        if (disp) disp.textContent = formatTime(countdownSeconds);
+                    }
+                    if (timerRunning) {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        renderTimer();
+                        return;
+                    }
+                    if (countdownSeconds <= 0) countdownSeconds = countdownTotal;
+                    timerRunning = true;
+                    renderTimer();
+                    timerInterval = setInterval(() => {
+                        countdownSeconds--;
+                        const disp = document.getElementById('timerDisplay');
+                        if (disp) disp.textContent = formatTime(countdownSeconds);
+                        if (countdownSeconds <= 0) {
+                            clearInterval(timerInterval);
+                            timerRunning = false;
+                            if (navigator.vibrate) navigator.vibrate(200);
+                            renderTimer();
+                        }
+                    }, 1000);
+                } else {
+                    if (timerRunning) {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        renderTimer();
+                        return;
+                    }
+                    timerRunning = true;
+                    renderTimer();
+                    const startTime = Date.now() - stopwatchSeconds * 1000;
+                    timerInterval = setInterval(() => {
+                        stopwatchSeconds = (Date.now() - startTime) / 1000;
+                        const disp = document.getElementById('timerDisplay');
+                        if (disp) disp.textContent = formatLapTime(stopwatchSeconds);
+                    }, 50);
+                }
+            }
+
+            function resetTimer() {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                if (timerMode === 'countdown') {
+                    countdownSeconds = countdownTotal || 0;
+                } else {
+                    stopwatchSeconds = 0;
+                    laps = [];
+                    lapCount = 0;
+                }
+                renderTimer();
+            }
+
+            // ================================================================
+            // ✨ 全新滑动逻辑（修复输入框冲突 + 消除虚位）✨
+            // ================================================================
+            const carousel = document.getElementById('carousel');
+            let dragStartX = 0;
+            let dragStartY = 0;
+            let isDragging = false;
+            let isHorizontal = false;
+            let dragStartOffset = 0;
+
+            // 判断是否是交互元素（输入框、按钮、复选框等）
+            function isInteractiveElement(el) {
+                const tag = el.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'button' || tag === 'select' || tag === 'textarea') return true;
+                if (el.closest && el.closest('.task-item, .log-entry, .timer-controls, .timer-set, .add-card, .lap-list'))
+                    return false;
+                // 额外检查是否为可编辑区域
+                if (el.isContentEditable) return true;
+                return false;
+            }
+
+            // 设置页面（带过渡）
+            function setPage(index, animate = true) {
+                if (isTransitioning || index === currentPage) return;
+                isTransitioning = true;
+                currentPage = index;
+                if (!animate) {
+                    track.style.transition = 'none';
+                } else {
+                    track.style.transition = 'transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1)';
+                }
+                track.style.transform = `translateX(-${index * 100}%)`;
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === index);
+                });
+                if (index === 1 && timerPage.innerHTML.trim() === '') {
+                    renderTimer();
+                }
+                // 恢复过渡
+                if (!animate) {
+                    void track.offsetHeight;
+                    track.style.transition = 'transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1)';
+                }
+                setTimeout(() => {
+                    isTransitioning = false;
+                }, 450);
+            }
+
+            // --- 触摸事件 ---
+            carousel.addEventListener('touchstart', function(e) {
+                if (isTransitioning) return;
+                const touch = e.touches[0];
+                const target = document.elementFromPoint(touch.clientX, touch.clientY);
+                // 如果点击的是输入框等交互元素，不启动滑动
+                if (isInteractiveElement(target)) {
+                    isDragging = false;
+                    return;
+                }
+                dragStartX = touch.clientX;
+                dragStartY = touch.clientY;
+                isDragging = true;
+                isHorizontal = false;
+                dragStartOffset = -currentPage * 100;
+                track.style.transition = 'none';
+            }, { passive: true });
+
+            carousel.addEventListener('touchmove', function(e) {
+                if (!isDragging || isTransitioning) return;
+                const touch = e.touches[0];
+                const dx = touch.clientX - dragStartX;
+                const dy = touch.clientY - dragStartY;
+                // 判断是否为水平滑动（水平位移大于垂直位移，且水平超过10px）
+                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+                    isHorizontal = true;
+                    e.preventDefault();
+                    const dampened = dx * 0.6;
+                    const offsetPercent = (dampened / carousel.offsetWidth) * 100;
+                    let newOffset = dragStartOffset + offsetPercent;
+                    // 边界限制
+                    if (newOffset > 0) newOffset = 0;
+                    if (newOffset < -100) newOffset = -100;
+                    track.style.transform = `translateX(${newOffset}%)`;
+                }
+            }, { passive: false });
+
+            carousel.addEventListener('touchend', function(e) {
+                if (!isDragging || isTransitioning) return;
+                isDragging = false;
+                if (!isHorizontal) return;
+                const dx = e.changedTouches[0].clientX - dragStartX;
+                const threshold = 40;
+                // 计算当前偏移量
+                const transform = track.style.transform;
+                let currentOffset = -currentPage * 100;
+                if (transform && transform.includes('translateX')) {
+                    const match = transform.match(/translateX\((-?\d+\.?\d*)%\)/);
+                    if (match) currentOffset = parseFloat(match[1]);
+                }
+                // 如果偏移量接近边界（左边界0，右边界-100），直接吸附
+                if (currentOffset > -5 && currentOffset < 5) {
+                    setPage(0);
+                } else if (currentOffset < -95 && currentOffset > -105) {
+                    setPage(1);
+                } else if (dx < -threshold && currentPage < 1) {
+                    setPage(1);
+                } else if (dx > threshold && currentPage > 0) {
+                    setPage(0);
+                } else {
+                    setPage(currentPage);
+                }
+            }, { passive: true });
+
+            // --- 鼠标事件 ---
+            let mouseDown = false;
+            let mouseStartX = 0;
+            let mouseStartOffset = 0;
+
+            carousel.addEventListener('mousedown', function(e) {
+                if (isTransitioning) return;
+                const target = e.target;
+                if (isInteractiveElement(target)) {
+                    mouseDown = false;
+                    return;
+                }
+                mouseDown = true;
+                mouseStartX = e.clientX;
+                mouseStartOffset = -currentPage * 100;
+                track.style.transition = 'none';
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (!mouseDown || isTransitioning) return;
+                const dx = e.clientX - mouseStartX;
+                const dampened = dx * 0.6;
+                const offsetPercent = (dampened / carousel.offsetWidth) * 100;
+                let newOffset = mouseStartOffset + offsetPercent;
+                if (newOffset > 0) newOffset = 0;
+                if (newOffset < -100) newOffset = -100;
+                track.style.transform = `translateX(${newOffset}%)`;
+            });
+
+            document.addEventListener('mouseup', function(e) {
+                if (!mouseDown) return;
+                mouseDown = false;
+                const dx = e.clientX - mouseStartX;
+                const transform = track.style.transform;
+                let currentOffset = -currentPage * 100;
+                if (transform && transform.includes('translateX')) {
+                    const match = transform.match(/translateX\((-?\d+\.?\d*)%\)/);
+                    if (match) currentOffset = parseFloat(match[1]);
+                }
+                // 吸附边界
+                if (currentOffset > -5 && currentOffset < 5) {
+                    setPage(0);
+                } else if (currentOffset < -95 && currentOffset > -105) {
+                    setPage(1);
+                } else if (dx < -threshold && currentPage < 1) {
+                    setPage(1);
+                } else if (dx > threshold && currentPage > 0) {
+                    setPage(0);
+                } else {
+                    setPage(currentPage);
                 }
             });
 
-            addBtn.addEventListener('click', addTask);
+            // 指示点点击
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', function() {
+                    if (isTransitioning) return;
+                    setPage(index);
+                });
+            });
+
+            // ================================================================
+            // 键盘事件
+            // ================================================================
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && document.activeElement.tagName === 'INPUT') {
-                    addTask();
+                if (e.key === 'Enter' && document.activeElement && document.activeElement.tagName === 'INPUT') {
+                    const inputs = ['subjectInput', 'timeInput', 'totalCount'];
+                    if (inputs.includes(document.activeElement.id)) {
+                        addTask();
+                    }
                 }
             });
+
+            // ================================================================
+            // 初始化
+            // ================================================================
+            loadData();
+            renderTasks();
+            renderTimer();
+            // 设置初始状态
+            track.style.transition = 'none';
+            track.style.transform = 'translateX(0%)';
+            void track.offsetHeight;
+            track.style.transition = 'transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1)';
+            currentPage = 0;
+            dots.forEach((dot, i) => dot.classList.toggle('active', i === 0));
 
             celebrationEl.addEventListener('click', function() {
                 this.classList.remove('active');
@@ -694,25 +1399,17 @@
                     celebrationTimer = null; }
             });
 
-            loadData();
-            renderTasks();
-            renderLogs();
+            // ================================================================
+            // Service Worker
+            // ================================================================
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('./sw.js')
+                        .then(function(reg) { console.log('SW registered:', reg); })
+                        .catch(function(err) { console.log('SW registration failed:', err); });
+                });
+            }
         })();
-  // 注册 Service Worker
-  
-    if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('/vbotassisacat/sw.js')
-        .then(function(registration) {
-          console.log('SW registered successfully:', registration);
-        })
-        .catch(function(error) {
-          console.log('SW registration failed:', error);
-        });
-    });
-  } else {
-    console.log('Service Worker is not supported by this browser.');
-  }
     </script>
 </body>
 </html>
