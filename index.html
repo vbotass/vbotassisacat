@@ -1,20 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head> <link rel="manifest" href="/vbotassisacat/manifest.json" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Study Tasks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Georgia&display=swap" rel="stylesheet" />
-    <link rel="manifest" href="/vbotassisacat/manifest.json" />
-    <style>
-        /* ... 所有样式与上一版完全相同 ... */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html,
-        body {
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 26.2.5.1 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="00:00:00"/>
+	<style type="text/css">
+		@page { size: 8.27in 11.69in; margin: 0.79in }
+		p { margin-bottom: 0.1in; line-height: 115%; background: transparent }
+		pre { background: transparent }
+		pre.western { font-family: "Liberation Mono", monospace; font-size: 10pt }
+		pre.cjk { font-family: "NSimSun", monospace; font-size: 10pt }
+		pre.ctl { font-family: "Liberation Mono", monospace; font-size: 10pt }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><pre class="western">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot; /&gt;
+    &lt;title&gt;Study Tasks · Nothing Tech&lt;/title&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&amp;family=Georgia&amp;display=swap&quot; rel=&quot;stylesheet&quot; /&gt;
+    &lt;link rel=&quot;manifest&quot; href=&quot;/vbotassisacat/manifest.json&quot; /&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
             height: 100%;
             overflow: hidden;
             background: #ffffff;
@@ -33,11 +44,12 @@
             position: relative;
         }
 
+        /* ===== Header with integrated date + live time ===== */
         .header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            padding: 12px 16px 8px 16px;
+            align-items: center;
+            padding: 12px 16px 10px 16px;
             border-bottom: 1px solid #e5e5e5;
             flex-shrink: 0;
             background: #ffffff;
@@ -46,16 +58,30 @@
         .header h1 {
             font-family: 'Georgia', serif;
             font-weight: 400;
-            font-size: 28px;
+            font-size: 26px;
             letter-spacing: -0.5px;
             color: #000;
         }
-        .header .date {
-            font-size: 14px;
+        .header-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 1px;
+            font-family: 'Georgia', serif;
+        }
+        .header-meta #dateDisplay {
+            font-size: 12px;
             color: #999;
             letter-spacing: 0.3px;
         }
+        .header-meta #liveTime {
+            font-size: 17px;
+            color: #000;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 1px;
+        }
 
+        /* ===== Page indicator ===== */
         .page-indicator {
             display: flex;
             justify-content: center;
@@ -71,11 +97,11 @@
             border-radius: 999px;
             background: #ddd;
             transition: background 0.3s;
+            cursor: pointer;
         }
-        .page-indicator .dot.active {
-            background: #e60000;
-        }
+        .page-indicator .dot.active { background: #e60000; }
 
+        /* ===== Carousel ===== */
         .carousel {
             flex: 1;
             position: relative;
@@ -99,18 +125,11 @@
             overscroll-behavior: contain;
             background: #ffffff;
         }
-        .carousel-page::-webkit-scrollbar {
-            width: 3px;
-        }
-        .carousel-page::-webkit-scrollbar-track {
-            background: #f0f0f0;
-        }
-        .carousel-page::-webkit-scrollbar-thumb {
-            background: #ddd;
-            border-radius: 999px;
-        }
+        .carousel-page::-webkit-scrollbar { width: 3px; }
+        .carousel-page::-webkit-scrollbar-track { background: #f0f0f0; }
+        .carousel-page::-webkit-scrollbar-thumb { background: #ddd; border-radius: 999px; }
 
-        /* ===== 任务列表页 ===== */
+        /* ===== Shared styles ===== */
         .add-card {
             background: #f7f7f7;
             padding: 16px 16px 14px;
@@ -136,12 +155,8 @@
             border-radius: 0;
             touch-action: manipulation;
         }
-        .add-card .row input:focus {
-            border-color: #e60000;
-        }
-        .add-card .row input::placeholder {
-            color: #bbb;
-        }
+        .add-card .row input:focus { border-color: #e60000; }
+        .add-card .row input::placeholder { color: #bbb; }
         .add-card .long-row {
             display: flex;
             align-items: center;
@@ -157,7 +172,7 @@
             gap: 6px;
             cursor: pointer;
         }
-        .add-card .long-row input[type="checkbox"] {
+        .add-card .long-row input[type=&quot;checkbox&quot;] {
             width: 18px;
             height: 18px;
             accent-color: #e60000;
@@ -170,10 +185,8 @@
             cursor: pointer;
             touch-action: manipulation;
         }
-        .add-card .long-row input[type="checkbox"]:checked {
-            background: #e60000;
-        }
-        .add-card .long-row input[type="checkbox"]:checked::after {
+        .add-card .long-row input[type=&quot;checkbox&quot;]:checked { background: #e60000; }
+        .add-card .long-row input[type=&quot;checkbox&quot;]:checked::after {
             content: '✓';
             position: absolute;
             color: #fff;
@@ -193,9 +206,7 @@
             font-family: 'Inter', sans-serif;
             touch-action: manipulation;
         }
-        .add-card .long-row .total-input:focus {
-            border-color: #e60000;
-        }
+        .add-card .long-row .total-input:focus { border-color: #e60000; }
         .add-btn {
             width: 100%;
             padding: 12px;
@@ -212,9 +223,7 @@
             margin-top: 2px;
             touch-action: manipulation;
         }
-        .add-btn:hover {
-            background: #222;
-        }
+        .add-btn:hover { background: #222; }
 
         .task-list {
             display: flex;
@@ -266,30 +275,13 @@
             transition: color 0.2s;
             touch-action: manipulation;
         }
-        .task-item .top .actions .done-btn {
-            color: #e60000;
-            font-size: 19px;
-        }
-        .task-item .top .actions .done-btn:hover {
-            color: #cc0000;
-        }
-        .task-item .top .actions .delete-btn {
-            color: #bbb;
-            font-size: 17px;
-        }
-        .task-item .top .actions .delete-btn:hover {
-            color: #e60000;
-        }
-        .task-item.done .subject {
-            text-decoration: line-through;
-            color: #aaa;
-        }
-        .progress-area {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            margin-top: 3px;
-        }
+        .task-item .top .actions .done-btn { color: #e60000; font-size: 19px; }
+        .task-item .top .actions .done-btn:hover { color: #cc0000; }
+        .task-item .top .actions .delete-btn { color: #bbb; font-size: 17px; }
+        .task-item .top .actions .delete-btn:hover { color: #e60000; }
+        .task-item.done .subject { text-decoration: line-through; color: #aaa; }
+
+        .progress-area { display: flex; flex-direction: column; gap: 3px; margin-top: 3px; }
         .progress-bar-track {
             width: 100%;
             height: 4px;
@@ -313,11 +305,7 @@
             flex-wrap: wrap;
             gap: 2px 0;
         }
-        .progress-detail .left {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+        .progress-detail .left { display: flex; gap: 10px; flex-wrap: wrap; }
         .progress-detail .right .progress-btn {
             background: none;
             border: 1px solid #d0d0d0;
@@ -330,12 +318,9 @@
             transition: all 0.2s;
             touch-action: manipulation;
         }
-        .progress-detail .right .progress-btn:hover {
-            border-color: #e60000;
-            color: #000;
-        }
+        .progress-detail .right .progress-btn:hover { border-color: #e60000; color: #000; }
 
-        /* ===== 学习记录 ===== */
+        /* ===== Log ===== */
         .log-section {
             margin-top: 20px;
             border-top: 1px solid #e5e5e5;
@@ -367,15 +352,8 @@
             transition: all 0.2s;
             touch-action: manipulation;
         }
-        .log-header .log-delete-toggle:hover {
-            border-color: #e60000;
-            color: #000;
-        }
-        .log-header .log-delete-toggle.active {
-            border-color: #e60000;
-            color: #e60000;
-        }
-
+        .log-header .log-delete-toggle:hover { border-color: #e60000; color: #000; }
+        .log-header .log-delete-toggle.active { border-color: #e60000; color: #e60000; }
         .log-entry {
             font-size: 12px;
             color: #888;
@@ -391,13 +369,8 @@
             flex: 1;
             align-items: center;
         }
-        .log-entry .log-left .action {
-            color: #333;
-        }
-        .log-entry .log-left .time {
-            color: #bbb;
-            margin-left: 12px;
-        }
+        .log-entry .log-left .action { color: #333; }
+        .log-entry .log-left .time { color: #bbb; margin-left: 12px; }
         .log-entry .log-delete-btn {
             background: none;
             border: none;
@@ -410,13 +383,8 @@
             display: none;
             touch-action: manipulation;
         }
-        .log-entry .log-delete-btn:hover {
-            color: #e60000;
-        }
-        .log-entry .log-delete-btn.show {
-            display: inline;
-        }
-
+        .log-entry .log-delete-btn:hover { color: #e60000; }
+        .log-entry .log-delete-btn.show { display: inline; }
         .empty-msg {
             color: #ccc;
             font-size: 14px;
@@ -424,10 +392,8 @@
             padding: 20px 0;
         }
 
-        /* ===== 计时器页 ===== */
-        .timer-page {
-            padding-top: 4px;
-        }
+        /* ===== Timer page ===== */
+        .timer-page { padding-top: 4px; }
         .timer-tabs {
             display: flex;
             border-bottom: 1px solid #e5e5e5;
@@ -447,10 +413,7 @@
             letter-spacing: 0.5px;
             touch-action: manipulation;
         }
-        .timer-tabs .tab.active {
-            color: #000;
-            border-bottom-color: #e60000;
-        }
+        .timer-tabs .tab.active { color: #000; border-bottom-color: #e60000; }
         .timer-display {
             font-family: 'Georgia', serif;
             font-size: 52px;
@@ -480,26 +443,15 @@
             min-width: 70px;
             touch-action: manipulation;
         }
-        .timer-controls button:hover {
-            border-color: #e60000;
-        }
+        .timer-controls button:hover { border-color: #e60000; }
         .timer-controls button.primary {
             background: #000000;
             color: #ffffff;
             border-color: #000000;
         }
-        .timer-controls button.primary:hover {
-            background: #222;
-            border-color: #222;
-        }
-        .timer-controls button.danger {
-            border-color: #e60000;
-            color: #e60000;
-        }
-        .timer-controls button.danger:hover {
-            background: #e60000;
-            color: #ffffff;
-        }
+        .timer-controls button.primary:hover { background: #222; border-color: #222; }
+        .timer-controls button.danger { border-color: #e60000; color: #e60000; }
+        .timer-controls button.danger:hover { background: #e60000; color: #ffffff; }
         .timer-set {
             display: flex;
             justify-content: center;
@@ -520,14 +472,8 @@
             color: #000;
             touch-action: manipulation;
         }
-        .timer-set input:focus {
-            border-color: #e60000;
-        }
-        .timer-set span {
-            font-size: 16px;
-            color: #888;
-            font-family: 'Inter', sans-serif;
-        }
+        .timer-set input:focus { border-color: #e60000; }
+        .timer-set span { font-size: 16px; color: #888; font-family: 'Inter', sans-serif; }
         .lap-list {
             margin-top: 12px;
             border-top: 1px solid #e5e5e5;
@@ -541,21 +487,14 @@
             padding: 3px 0;
             border-bottom: 1px solid #f0f0f0;
         }
-        .lap-item .lap-num {
-            color: #999;
-        }
-        .lap-item .lap-time {
-            font-family: 'Georgia', serif;
-            font-variant-numeric: tabular-nums;
-        }
+        .lap-item .lap-num { color: #999; }
+        .lap-item .lap-time { font-family: 'Georgia', serif; font-variant-numeric: tabular-nums; }
 
-        /* 庆祝 */
+        /* ===== Celebration ===== */
         .celebration-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 999;
             display: flex;
@@ -564,16 +503,11 @@
             opacity: 0;
             transition: opacity 0.5s;
         }
-        .celebration-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .celebration-overlay.active { opacity: 1; pointer-events: auto; }
         .celebration-overlay .bg {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(230, 0, 0, 0.08);
             backdrop-filter: blur(2px);
         }
@@ -600,45 +534,362 @@
             0% { transform: scale(0.92); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-    </style>
-</head>
-<body>
-    <div class="app" id="app">
-        <div class="header">
-            <h1>Study Tasks</h1>
-            <span class="date" id="dateDisplay"></span>
-        </div>
 
-        <div class="page-indicator" id="pageIndicator">
-            <span class="dot active" data-page="0"></span>
-            <span class="dot" data-page="1"></span>
-        </div>
+        /* ================================================================
+           WEEKEND PLAN PAGE
+           ================================================================ */
+        .weekend-page { padding-top: 4px; }
 
-        <div class="carousel" id="carousel">
-            <div class="carousel-track" id="track">
-                <div class="carousel-page" id="taskPage"></div>
-                <div class="carousel-page timer-page" id="timerPage"></div>
-            </div>
-        </div>
-    </div>
+        /* Slider card */
+        .weekend-card {
+            background: #f7f7f7;
+            border: 1px solid #e5e5e5;
+            padding: 18px 16px 16px;
+            margin-bottom: 14px;
+        }
+        .weekend-card h3 {
+            font-family: 'Georgia', serif;
+            font-weight: 400;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
 
-    <div class="celebration-overlay" id="celebrationOverlay">
-        <div class="bg"></div>
-        <div class="text">
-            <div>✦ Done</div>
-            <div class="sub">All completed</div>
-        </div>
-    </div>
+        .slider-display {
+            font-family: 'Georgia', serif;
+            font-size: 30px;
+            text-align: center;
+            color: #000;
+            letter-spacing: 1px;
+            margin: 4px 0 4px;
+            font-variant-numeric: tabular-nums;
+        }
+        .slider-sublabel {
+            text-align: center;
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+        }
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #999;
+            margin-bottom: 4px;
+            letter-spacing: 0.2px;
+        }
+        .slider-labels .mid { color: #ccc; }
 
-    <script>
+        input[type=&quot;range&quot;].nt-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 3px;
+            background: #e5e5e5;
+            border-radius: 999px;
+            outline: none;
+            margin: 0;
+            padding: 0;
+            touch-action: manipulation;
+        }
+        input[type=&quot;range&quot;].nt-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e60000;
+            cursor: pointer;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 1px #e60000, 0 2px 6px rgba(0,0,0,0.12);
+            transition: transform 0.15s;
+        }
+        input[type=&quot;range&quot;].nt-slider::-webkit-slider-thumb:active {
+            transform: scale(1.15);
+        }
+        input[type=&quot;range&quot;].nt-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #e60000;
+            cursor: pointer;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 1px #e60000, 0 2px 6px rgba(0,0,0,0.12);
+        }
+
+        .time-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-top: 1px solid #e5e5e5;
+            margin-top: 4px;
+            font-size: 13px;
+            color: #555;
+        }
+        .time-info-row .label {
+            font-family: 'Inter', sans-serif;
+            color: #888;
+            letter-spacing: 0.3px;
+        }
+        .time-info-row .value {
+            font-family: 'Georgia', serif;
+            color: #000;
+            font-size: 15px;
+            font-variant-numeric: tabular-nums;
+        }
+        .time-info-row .value.warn { color: #e60000; }
+
+        /* Photo upload */
+        .photo-upload-area {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .photo-upload-btn {
+            padding: 6px 18px;
+            border: 1px solid #d0d0d0;
+            background: #ffffff;
+            color: #333;
+            font-size: 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            touch-action: manipulation;
+        }
+        .photo-upload-btn:hover { border-color: #e60000; color: #000; }
+        .photo-preview {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .photo-thumb {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            border: 1px solid #e5e5e5;
+            cursor: pointer;
+        }
+
+        /* Reminder */
+        .reminder-box {
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: #fff8f8;
+            border-left: 2px solid #e60000;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+            letter-spacing: 0.2px;
+            font-family: 'Inter', sans-serif;
+        }
+        .reminder-box .tag {
+            color: #e60000;
+            font-weight: 500;
+            margin-right: 6px;
+        }
+
+        /* Remaining time badge */
+        .remaining-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            margin-top: 4px;
+            width: fit-content;
+        }
+        .remaining-badge.ok {
+            background: #f0f0f0;
+            color: #666;
+        }
+        .remaining-badge.soon {
+            background: #fff0f0;
+            color: #e60000;
+        }
+        .remaining-badge.now {
+            background: #e60000;
+            color: #ffffff;
+        }
+        .remaining-badge.overdue {
+            background: #000000;
+            color: #ffffff;
+        }
+        .remaining-badge.done {
+            background: #e60000;
+            color: #ffffff;
+        }
+
+        /* Supervisor */
+        .supervisor-toggle {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+        .supervisor-toggle button {
+            background: none;
+            border: 1px solid #d0d0d0;
+            padding: 4px 16px;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            color: #888;
+            cursor: pointer;
+            border-radius: 999px;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+            touch-action: manipulation;
+        }
+        .supervisor-toggle button:hover { border-color: #e60000; color: #000; }
+        .supervisor-toggle button.active {
+            border-color: #e60000;
+            color: #e60000;
+            background: #fff8f8;
+        }
+
+        .supervisor-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .supervisor-item {
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .supervisor-item .row1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .supervisor-item .row1 .name {
+            font-size: 15px;
+            font-weight: 500;
+            color: #000;
+        }
+        .supervisor-item .row1 .status {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+        }
+        .supervisor-item .row1 .status.done {
+            background: #e60000;
+            color: #fff;
+        }
+        .supervisor-item .row1 .status.pending {
+            background: #f0f0f0;
+            color: #888;
+        }
+        .supervisor-item .row1 .status.overdue {
+            background: #000;
+            color: #fff;
+        }
+        .supervisor-item .meta {
+            font-size: 12px;
+            color: #888;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .supervisor-item .meta .highlight {
+            color: #e60000;
+        }
+        .supervisor-item .thumbs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .supervisor-item .thumbs img {
+            width: 48px;
+            height: 48px;
+            object-fit: cover;
+            border: 1px solid #e5e5e5;
+            cursor: pointer;
+        }
+
+        /* Photo viewer */
+        .photo-viewer {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .photo-viewer.show { display: flex; }
+        .photo-viewer img {
+            max-width: 90%;
+            max-height: 85%;
+            border: 1px solid #fff;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;app&quot; id=&quot;app&quot;&gt;
+        &lt;div class=&quot;header&quot;&gt;
+            &lt;h1&gt;Study Tasks&lt;/h1&gt;
+            &lt;div class=&quot;header-meta&quot;&gt;
+                &lt;span id=&quot;dateDisplay&quot;&gt;&lt;/span&gt;
+                &lt;span id=&quot;liveTime&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;page-indicator&quot; id=&quot;pageIndicator&quot;&gt;
+            &lt;span class=&quot;dot&quot; data-page=&quot;0&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;dot active&quot; data-page=&quot;1&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;dot&quot; data-page=&quot;2&quot;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;carousel&quot; id=&quot;carousel&quot;&gt;
+            &lt;div class=&quot;carousel-track&quot; id=&quot;track&quot;&gt;
+                &lt;div class=&quot;carousel-page&quot; id=&quot;taskPage&quot;&gt;&lt;/div&gt;
+                &lt;div class=&quot;carousel-page weekend-page&quot; id=&quot;weekendPage&quot;&gt;&lt;/div&gt;
+                &lt;div class=&quot;carousel-page timer-page&quot; id=&quot;timerPage&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;celebration-overlay&quot; id=&quot;celebrationOverlay&quot;&gt;
+        &lt;div class=&quot;bg&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;text&quot;&gt;
+            &lt;div&gt;✦ Done&lt;/div&gt;
+            &lt;div class=&quot;sub&quot;&gt;All lessons completed&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class=&quot;photo-viewer&quot; id=&quot;photoViewer&quot;&gt;
+        &lt;img id=&quot;photoViewerImg&quot; src=&quot;&quot; alt=&quot;&quot; /&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
         (function() {
             // ================================================================
-            // 数据
+            // Data
             // ================================================================
             let tasks = [];
             let logs = [];
+            let weekendTasks = [];   // { id, subject, duration, deadline, completed, photos, createdAt }
             let celebrationTimer = null;
             let logDeleteMode = false;
+            let supervisorMode = false;
 
             // ================================================================
             // DOM
@@ -646,18 +897,34 @@
             const track = document.getElementById('track');
             const taskPage = document.getElementById('taskPage');
             const timerPage = document.getElementById('timerPage');
+            const weekendPage = document.getElementById('weekendPage');
             const dots = document.querySelectorAll('.dot');
-            const dateDisplay = document.getElementById('dateDisplay');
             const celebrationEl = document.getElementById('celebrationOverlay');
+            const photoViewer = document.getElementById('photoViewer');
+            const photoViewerImg = document.getElementById('photoViewerImg');
 
-            let currentPage = 0;
-            let isTransitioning = false;
-
-            const now = new Date();
-            dateDisplay.textContent = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            let currentPage = 1; // default: weekend plan
 
             // ================================================================
-            // 数据持久化
+            // Header clock — integrated at top
+            // ================================================================
+            function updateHeaderClock() {
+                const now = new Date();
+                const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const dateStr = dayNames[now.getDay()] + ' ' + (now.getMonth() + 1) + '/' + now.getDate();
+                const hh = String(now.getHours()).padStart(2, '0');
+                const mm = String(now.getMinutes()).padStart(2, '0');
+                const ss = String(now.getSeconds()).padStart(2, '0');
+                const dateEl = document.getElementById('dateDisplay');
+                const timeEl = document.getElementById('liveTime');
+                if (dateEl) dateEl.textContent = dateStr;
+                if (timeEl) timeEl.textContent = hh + ':' + mm + ':' + ss;
+            }
+            setInterval(updateHeaderClock, 1000);
+            updateHeaderClock();
+
+            // ================================================================
+            // Persistence
             // ================================================================
             function loadData() {
                 try {
@@ -665,35 +932,110 @@
                     if (saved) tasks = JSON.parse(saved);
                     const savedLogs = localStorage.getItem('nothing_logs');
                     if (savedLogs) logs = JSON.parse(savedLogs);
+                    const savedWeekend = localStorage.getItem('nothing_weekend');
+                    if (savedWeekend) weekendTasks = JSON.parse(savedWeekend);
                 } catch (e) { /* ignore */ }
             }
 
             function saveData() {
                 localStorage.setItem('nothing_tasks', JSON.stringify(tasks));
                 localStorage.setItem('nothing_logs', JSON.stringify(logs));
+                localStorage.setItem('nothing_weekend', JSON.stringify(weekendTasks));
             }
 
             // ================================================================
-            // 日志
+            // Time helpers
+            // Window: Fri 19:00 → Sun 16:00 = 45 hours = 2700 min
+            // Slider step: 15 min → max = 180
+            // ================================================================
+            const WINDOW_TOTAL_MIN = 45 * 60; // 2700
+
+            function formatWeekendTime(minFromStart) {
+                // minFromStart is minutes from Fri 19:00
+                // Convert to real-world day + time
+                const totalMin = 19 * 60 + minFromStart; // minutes from Fri 00:00
+                const dayIndex = Math.floor(totalMin / (24 * 60)); // 0=Fri, 1=Sat, 2=Sun
+                const minOfDay = totalMin % (24 * 60);
+                const hh = String(Math.floor(minOfDay / 60)).padStart(2, '0');
+                const mm = String(minOfDay % 60).padStart(2, '0');
+                const dayNames = ['Fri', 'Sat', 'Sun'];
+                const d = dayNames[Math.min(dayIndex, 2)];
+                return d + ' ' + hh + ':' + mm;
+            }
+
+            function formatDuration(min) {
+                if (min &lt;= 0) return '0min';
+                const h = Math.floor(min / 60);
+                const m = min % 60;
+                if (h === 0) return m + 'min';
+                if (m === 0) return h + 'h';
+                return h + 'h ' + m + 'min';
+            }
+
+            // Returns minutes from now until the latest start time of a task.
+            // Window is Fri 19:00 → Sun 16:00.
+            function minutesUntilLatestStart(task) {
+                const now = new Date();
+                const day = now.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+                const h = now.getHours();
+                const m = now.getMinutes();
+                const nowMin = h * 60 + m;
+
+                const latestStartOffset = task.deadline - task.duration;
+
+                let currentOffset = null;
+
+                if (day === 5 &amp;&amp; h &gt;= 19) {
+                    // Friday after 19:00
+                    currentOffset = nowMin - 19 * 60;
+                } else if (day === 6) {
+                    // Saturday — 5 hours from Fri 19:00 to Sat 00:00 = 300 min
+                    currentOffset = 5 * 60 + nowMin;
+                } else if (day === 0 &amp;&amp; h &lt; 16) {
+                    // Sunday before 16:00 — 29 hours from Fri 19:00 to Sun 00:00 = 1740 min
+                    currentOffset = 29 * 60 + nowMin;
+                }
+
+                if (currentOffset !== null) {
+                    return latestStartOffset - currentOffset;
+                }
+
+                // Outside the window — compute distance to next Friday 19:00
+                let daysToFri = (5 - day + 7) % 7;
+                if (daysToFri === 0 &amp;&amp; h &gt;= 19) daysToFri = 7;
+                const minutesToFri19 = daysToFri * 24 * 60 + (19 * 60 - nowMin);
+                return minutesToFri19 + latestStartOffset;
+            }
+
+            function formatRemaining(min) {
+                if (min &lt;= 0) {
+                    const over = Math.abs(min);
+                    return 'overdue by ' + formatDuration(over);
+                }
+                return formatDuration(min) + ' until latest start';
+            }
+
+            // ================================================================
+            // Log
             // ================================================================
             function addLog(subject, action) {
                 const now = new Date();
                 const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
                 logs.push({ subject, action, time: timeStr });
-                if (logs.length > 200) logs.shift();
+                if (logs.length &gt; 200) logs.shift();
                 saveData();
                 renderTasks();
             }
 
             function deleteLog(index) {
-                if (index < 0 || index >= logs.length) return;
+                if (index &lt; 0 || index &gt;= logs.length) return;
                 logs.splice(index, 1);
                 saveData();
                 renderTasks();
             }
 
             // ================================================================
-            // 工具
+            // Utilities
             // ================================================================
             function parseTimeToHours(str) {
                 str = str.trim().toLowerCase();
@@ -710,8 +1052,8 @@
             }
 
             function formatHours(hours) {
-                if (hours < 0.01) return '0min';
-                if (hours < 1) return Math.round(hours * 60) + 'min';
+                if (hours &lt; 0.01) return '0min';
+                if (hours &lt; 1) return Math.round(hours * 60) + 'min';
                 const h = Math.floor(hours);
                 const m = Math.round((hours - h) * 60);
                 if (m === 0) return h + 'h';
@@ -734,40 +1076,79 @@
             function triggerCelebration() {
                 if (celebrationTimer) clearTimeout(celebrationTimer);
                 celebrationEl.classList.add('active');
-                celebrationTimer = setTimeout(() => {
+                celebrationTimer = setTimeout(() =&gt; {
                     celebrationEl.classList.remove('active');
                     celebrationTimer = null;
                 }, 2500);
             }
 
             // ================================================================
-            // 渲染任务
+            // Photo handling
+            // ================================================================
+            function compressImage(file, maxDim, quality) {
+                return new Promise((resolve) =&gt; {
+                    const reader = new FileReader();
+                    reader.onload = (e) =&gt; {
+                        const img = new Image();
+                        img.onload = () =&gt; {
+                            let { width, height } = img;
+                            if (width &gt; height &amp;&amp; width &gt; maxDim) {
+                                height = height * (maxDim / width);
+                                width = maxDim;
+                            } else if (height &gt; maxDim) {
+                                width = width * (maxDim / height);
+                                height = maxDim;
+                            }
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            resolve(canvas.toDataURL('image/jpeg', quality));
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            function openPhotoViewer(src) {
+                photoViewerImg.src = src;
+                photoViewer.classList.add('show');
+            }
+            photoViewer.addEventListener('click', () =&gt; {
+                photoViewer.classList.remove('show');
+                photoViewerImg.src = '';
+            });
+
+            // ================================================================
+            // TASK PAGE (no subtitle)
             // ================================================================
             function renderTasks() {
                 let html = '';
 
                 html += `
-                    <div class="add-card">
-                        <div class="row">
-                            <input type="text" id="subjectInput" placeholder="Subject" />
-                            <input type="text" id="timeInput" placeholder="Target time" />
-                        </div>
-                        <div class="long-row">
-                            <label>
-                                <input type="checkbox" id="isLongTask" />
+                    &lt;div class=&quot;add-card&quot;&gt;
+                        &lt;div class=&quot;row&quot;&gt;
+                            &lt;input type=&quot;text&quot; id=&quot;subjectInput&quot; placeholder=&quot;Subject&quot; /&gt;
+                            &lt;input type=&quot;text&quot; id=&quot;timeInput&quot; placeholder=&quot;Target time / total time&quot; /&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;long-row&quot;&gt;
+                            &lt;label&gt;
+                                &lt;input type=&quot;checkbox&quot; id=&quot;isLongTask&quot; /&gt;
                                 Long-term task
-                            </label>
-                            <input type="number" id="totalCount" class="total-input" placeholder="Lessons" min="1" value="" disabled />
-                        </div>
-                        <button class="add-btn" id="addTaskBtn">Add Task</button>
-                    </div>
+                            &lt;/label&gt;
+                            &lt;input type=&quot;number&quot; id=&quot;totalCount&quot; class=&quot;total-input&quot; placeholder=&quot;Lessons&quot; min=&quot;1&quot; disabled /&gt;
+                        &lt;/div&gt;
+                        &lt;button class=&quot;add-btn&quot; id=&quot;addTaskBtn&quot;&gt;Add Task&lt;/button&gt;
+                    &lt;/div&gt;
                 `;
 
                 if (tasks.length === 0) {
-                    html += `<div class="empty-msg">No tasks yet</div>`;
+                    html += `&lt;div class=&quot;empty-msg&quot;&gt;No tasks yet&lt;/div&gt;`;
                 } else {
-                    html += `<div class="task-list">`;
-                    for (let i = 0; i < tasks.length; i++) {
+                    html += `&lt;div class=&quot;task-list&quot;&gt;`;
+                    for (let i = 0; i &lt; tasks.length; i++) {
                         const task = tasks[i];
                         const isDone = task.done || false;
                         const isLong = task.isLong || false;
@@ -776,126 +1157,123 @@
                         if (isLong) {
                             const total = task.total || 0;
                             const completed = task.completed || 0;
-                            const progress = total > 0 ? Math.min(100, (completed / total) * 100) : 0;
+                            const progress = total &gt; 0 ? Math.min(100, (completed / total) * 100) : 0;
                             const remaining = total - completed;
                             let perLessonHours = 0;
                             let remainingHours = 0;
                             if (task.time) {
                                 const totalTimeHours = parseTimeToHours(task.time);
-                                if (total > 0) {
+                                if (total &gt; 0) {
                                     perLessonHours = totalTimeHours / total;
                                     remainingHours = perLessonHours * remaining;
                                 }
                             }
-                            const perLessonStr = perLessonHours > 0 ? formatHours(perLessonHours) : '--';
-                            const remainingStr = remainingHours > 0 ? formatHours(remainingHours) : '--';
+                            const perLessonStr = perLessonHours &gt; 0 ? formatHours(perLessonHours) : '--';
+                            const remainingStr = remainingHours &gt; 0 ? formatHours(remainingHours) : '--';
                             const totalTimeStr = task.time || '--';
 
                             html += `
-                                <div class="task-item ${doneClass}" data-index="${i}">
-                                    <div class="top">
-                                        <div class="info">
-                                            <span class="subject">${task.subject}</span>
-                                            <span class="time-target">${totalTimeStr} total · ${perLessonStr} / lesson</span>
-                                        </div>
-                                        <div class="actions">
-                                            <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
-                                        </div>
-                                    </div>
-                                    <div class="progress-area">
-                                        <div class="progress-bar-track">
-                                            <div class="progress-bar-fill" style="width:${progress}%"></div>
-                                        </div>
-                                        <div class="progress-detail">
-                                            <div class="left">
-                                                <span>${completed}/${total} done</span>
-                                                <span>${remaining} left</span>
-                                                <span>est. ${remainingStr} remaining</span>
-                                            </div>
-                                            <div class="right">
-                                                <button class="progress-btn" data-index="${i}" data-action="increment">+1 lesson</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                &lt;div class=&quot;task-item ${doneClass}&quot; data-index=&quot;${i}&quot;&gt;
+                                    &lt;div class=&quot;top&quot;&gt;
+                                        &lt;div class=&quot;info&quot;&gt;
+                                            &lt;span class=&quot;subject&quot;&gt;${task.subject}&lt;/span&gt;
+                                            &lt;span class=&quot;time-target&quot;&gt;${totalTimeStr} total · ${perLessonStr} / lesson&lt;/span&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class=&quot;actions&quot;&gt;
+                                            &lt;button class=&quot;delete-btn&quot; data-index=&quot;${i}&quot; data-action=&quot;delete&quot;&gt;✕&lt;/button&gt;
+                                        &lt;/div&gt;
+                                    &lt;/div&gt;
+                                    &lt;div class=&quot;progress-area&quot;&gt;
+                                        &lt;div class=&quot;progress-bar-track&quot;&gt;
+                                            &lt;div class=&quot;progress-bar-fill&quot; style=&quot;width:${progress}%&quot;&gt;&lt;/div&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class=&quot;progress-detail&quot;&gt;
+                                            &lt;div class=&quot;left&quot;&gt;
+                                                &lt;span&gt;${completed}/${total} done&lt;/span&gt;
+                                                &lt;span&gt;${remaining} left&lt;/span&gt;
+                                                &lt;span&gt;est. ${remainingStr} remaining&lt;/span&gt;
+                                            &lt;/div&gt;
+                                            &lt;div class=&quot;right&quot;&gt;
+                                                &lt;button class=&quot;progress-btn&quot; data-index=&quot;${i}&quot; data-action=&quot;increment&quot;&gt;+1 lesson&lt;/button&gt;
+                                            &lt;/div&gt;
+                                        &lt;/div&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
                             `;
                         } else {
                             html += `
-                                <div class="task-item ${doneClass}" data-index="${i}">
-                                    <div class="top">
-                                        <div class="info">
-                                            <span class="subject">${task.subject}</span>
-                                            <span class="time-target">${task.time || ''}</span>
-                                        </div>
-                                        <div class="actions">
-                                            <button class="done-btn" data-index="${i}" data-action="toggle">${isDone ? '↺' : '✓'}</button>
-                                            <button class="delete-btn" data-index="${i}" data-action="delete">✕</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                &lt;div class=&quot;task-item ${doneClass}&quot; data-index=&quot;${i}&quot;&gt;
+                                    &lt;div class=&quot;top&quot;&gt;
+                                        &lt;div class=&quot;info&quot;&gt;
+                                            &lt;span class=&quot;subject&quot;&gt;${task.subject}&lt;/span&gt;
+                                            &lt;span class=&quot;time-target&quot;&gt;${task.time || ''}&lt;/span&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class=&quot;actions&quot;&gt;
+                                            &lt;button class=&quot;done-btn&quot; data-index=&quot;${i}&quot; data-action=&quot;toggle&quot;&gt;${isDone ? '↺' : '✓'}&lt;/button&gt;
+                                            &lt;button class=&quot;delete-btn&quot; data-index=&quot;${i}&quot; data-action=&quot;delete&quot;&gt;✕&lt;/button&gt;
+                                        &lt;/div&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
                             `;
                         }
                     }
-                    html += `</div>`;
+                    html += `&lt;/div&gt;`;
                 }
 
-                html += `<div class="log-section">`;
+                html += `&lt;div class=&quot;log-section&quot;&gt;`;
                 html += `
-                    <div class="log-header">
-                        <h2>Study Log</h2>
-                        <button class="log-delete-toggle${logDeleteMode ? ' active' : ''}" id="logDeleteToggle">${logDeleteMode ? '✕ Done' : 'Delete'}</button>
-                    </div>
+                    &lt;div class=&quot;log-header&quot;&gt;
+                        &lt;h2&gt;Study Log&lt;/h2&gt;
+                        &lt;button class=&quot;log-delete-toggle${logDeleteMode ? ' active' : ''}&quot; id=&quot;logDeleteToggle&quot;&gt;${logDeleteMode ? '✕ Done' : 'Delete'}&lt;/button&gt;
+                    &lt;/div&gt;
                 `;
                 if (logs.length === 0) {
-                    html += `<div class="empty-msg">No records yet</div>`;
+                    html += `&lt;div class=&quot;empty-msg&quot;&gt;No records yet&lt;/div&gt;`;
                 } else {
                     const recent = logs.slice(-30).reverse();
-                    for (let i = 0; i < recent.length; i++) {
+                    for (let i = 0; i &lt; recent.length; i++) {
                         const log = recent[i];
                         const idx = logs.length - 1 - i;
                         html += `
-                            <div class="log-entry" data-log-index="${idx}">
-                                <div class="log-left">
-                                    <span class="action">${log.subject} · ${log.action}</span>
-                                    <span class="time">${log.time}</span>
-                                </div>
-                                <button class="log-delete-btn${logDeleteMode ? ' show' : ''}" data-log-index="${idx}">✕</button>
-                            </div>
+                            &lt;div class=&quot;log-entry&quot; data-log-index=&quot;${idx}&quot;&gt;
+                                &lt;div class=&quot;log-left&quot;&gt;
+                                    &lt;span class=&quot;action&quot;&gt;${log.subject} · ${log.action}&lt;/span&gt;
+                                    &lt;span class=&quot;time&quot;&gt;${log.time}&lt;/span&gt;
+                                &lt;/div&gt;
+                                &lt;button class=&quot;log-delete-btn${logDeleteMode ? ' show' : ''}&quot; data-log-index=&quot;${idx}&quot;&gt;✕&lt;/button&gt;
+                            &lt;/div&gt;
                         `;
                     }
                 }
-                html += `</div>`;
+                html += `&lt;/div&gt;`;
 
                 taskPage.innerHTML = html;
 
-                // 绑定事件
-                document.querySelectorAll('[data-action="toggle"]').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
+                document.querySelectorAll('[data-action=&quot;toggle&quot;]').forEach(btn =&gt; {
+                    btn.addEventListener('click', function() {
                         const idx = parseInt(this.dataset.index);
                         toggleTask(idx);
                     });
                 });
-                document.querySelectorAll('[data-action="increment"]').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
+                document.querySelectorAll('[data-action=&quot;increment&quot;]').forEach(btn =&gt; {
+                    btn.addEventListener('click', function() {
                         const idx = parseInt(this.dataset.index);
                         incrementTask(idx);
                     });
                 });
-                document.querySelectorAll('[data-action="delete"]').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
+                document.querySelectorAll('[data-action=&quot;delete&quot;]').forEach(btn =&gt; {
+                    btn.addEventListener('click', function() {
                         const idx = parseInt(this.dataset.index);
                         deleteTask(idx);
                     });
                 });
-
-                document.querySelectorAll('.log-delete-btn').forEach(btn => {
+                document.querySelectorAll('.log-delete-btn').forEach(btn =&gt; {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
                         const idx = parseInt(this.dataset.logIndex);
                         deleteLog(idx);
                     });
                 });
-
                 const toggleBtn = document.getElementById('logDeleteToggle');
                 if (toggleBtn) {
                     toggleBtn.addEventListener('click', function() {
@@ -903,26 +1281,21 @@
                         renderTasks();
                     });
                 }
-
                 const addBtn = document.getElementById('addTaskBtn');
                 if (addBtn) addBtn.addEventListener('click', addTask);
-
                 const longCheck = document.getElementById('isLongTask');
                 if (longCheck) {
                     longCheck.addEventListener('change', function() {
                         const checked = this.checked;
                         const tc = document.getElementById('totalCount');
                         if (tc) tc.disabled = !checked;
-                        if (checked && tc) tc.focus();
+                        if (checked &amp;&amp; tc) tc.focus();
                     });
                 }
             }
 
-            // ================================================================
-            // 任务操作
-            // ================================================================
             function toggleTask(index) {
-                if (index < 0 || index >= tasks.length) return;
+                if (index &lt; 0 || index &gt;= tasks.length) return;
                 const task = tasks[index];
                 if (task.isLong) return;
                 task.done = !task.done;
@@ -933,10 +1306,10 @@
             }
 
             function incrementTask(index) {
-                if (index < 0 || index >= tasks.length) return;
+                if (index &lt; 0 || index &gt;= tasks.length) return;
                 const task = tasks[index];
                 if (!task.isLong) return;
-                if (task.completed < task.total) {
+                if (task.completed &lt; task.total) {
                     task.completed++;
                     addLog(task.subject, `1 lesson done (${task.completed}/${task.total})`);
                     saveData();
@@ -948,9 +1321,9 @@
             }
 
             function deleteTask(index) {
-                if (index < 0 || index >= tasks.length) return;
+                if (index &lt; 0 || index &gt;= tasks.length) return;
                 const task = tasks[index];
-                if (confirm(`Delete task "${task.subject}"?`)) {
+                if (confirm(`Delete task &quot;${task.subject}&quot;?`)) {
                     tasks.splice(index, 1);
                     addLog(task.subject, 'Deleted');
                     saveData();
@@ -963,7 +1336,6 @@
                 const time = document.getElementById('timeInput');
                 const isLong = document.getElementById('isLongTask');
                 const tc = document.getElementById('totalCount');
-
                 if (!sub || !time || !isLong || !tc) return;
 
                 const subject = sub.value.trim();
@@ -973,24 +1345,12 @@
 
                 if (long) {
                     total = parseInt(tc.value) || 0;
-                    if (total <= 0) {
-                        alert('Please enter a valid number of lessons (at least 1)');
-                        return;
-                    }
-                    if (!timeVal) {
-                        alert('Please enter total time (e.g. 3h)');
-                        return;
-                    }
+                    if (total &lt;= 0) { alert('Please enter a valid number of lessons (at least 1)'); return; }
+                    if (!timeVal) { alert('Please enter total time (e.g. 3h)'); return; }
                     const hours = parseTimeToHours(timeVal);
-                    if (hours <= 0) {
-                        alert('Please enter a valid time (e.g. 3h or 90min)');
-                        return;
-                    }
+                    if (hours &lt;= 0) { alert('Please enter a valid time (e.g. 3h or 90min)'); return; }
                 }
-                if (!subject) {
-                    alert('Please enter a subject');
-                    return;
-                }
+                if (!subject) { alert('Please enter a subject'); return; }
 
                 const task = {
                     subject: subject,
@@ -1013,7 +1373,7 @@
             }
 
             // ================================================================
-            // 计时器
+            // TIMER PAGE (no subtitle)
             // ================================================================
             let timerMode = 'countdown';
             let timerRunning = false;
@@ -1029,80 +1389,73 @@
                 let html = '';
 
                 html += `
-                    <div class="timer-tabs">
-                        <div class="tab ${mode === 'countdown' ? 'active' : ''}" data-mode="countdown">Timer</div>
-                        <div class="tab ${mode === 'stopwatch' ? 'active' : ''}" data-mode="stopwatch">Stopwatch</div>
-                    </div>
+                    &lt;div class=&quot;timer-tabs&quot;&gt;
+                        &lt;div class=&quot;tab ${mode === 'countdown' ? 'active' : ''}&quot; data-mode=&quot;countdown&quot;&gt;Timer&lt;/div&gt;
+                        &lt;div class=&quot;tab ${mode === 'stopwatch' ? 'active' : ''}&quot; data-mode=&quot;stopwatch&quot;&gt;Stopwatch&lt;/div&gt;
+                    &lt;/div&gt;
                 `;
 
                 if (mode === 'countdown') {
                     html += `
-                        <div class="timer-display" id="timerDisplay">${formatTime(countdownSeconds)}</div>
-                        <div class="timer-set" id="timerSet">
-                            <input type="number" id="setMinutes" placeholder="0" min="0" value="0" />
-                            <span>min</span>
-                            <input type="number" id="setSeconds" placeholder="0" min="0" max="59" value="0" />
-                            <span>sec</span>
-                        </div>
-                        <div class="timer-controls">
-                            <button id="timerStartBtn" class="primary">${timerRunning ? 'Pause' : 'Start'}</button>
-                            <button id="timerResetBtn">Reset</button>
-                        </div>
+                        &lt;div class=&quot;timer-display&quot; id=&quot;timerDisplay&quot;&gt;${formatTime(countdownSeconds)}&lt;/div&gt;
+                        &lt;div class=&quot;timer-set&quot; id=&quot;timerSet&quot;&gt;
+                            &lt;input type=&quot;number&quot; id=&quot;setMinutes&quot; placeholder=&quot;0&quot; min=&quot;0&quot; value=&quot;0&quot; /&gt;
+                            &lt;span&gt;min&lt;/span&gt;
+                            &lt;input type=&quot;number&quot; id=&quot;setSeconds&quot; placeholder=&quot;0&quot; min=&quot;0&quot; max=&quot;59&quot; value=&quot;0&quot; /&gt;
+                            &lt;span&gt;sec&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;timer-controls&quot;&gt;
+                            &lt;button id=&quot;timerStartBtn&quot; class=&quot;primary&quot;&gt;${timerRunning ? 'Pause' : 'Start'}&lt;/button&gt;
+                            &lt;button id=&quot;timerResetBtn&quot;&gt;Reset&lt;/button&gt;
+                        &lt;/div&gt;
                     `;
                 } else {
                     html += `
-                        <div class="timer-display" id="timerDisplay">${formatLapTime(stopwatchSeconds)}</div>
-                        <div class="timer-controls">
-                            <button id="timerStartBtn" class="primary">${timerRunning ? 'Pause' : 'Start'}</button>
-                            <button id="timerLapBtn" ${!timerRunning ? 'disabled style="opacity:0.4;"' : ''}>Lap</button>
-                            <button id="timerResetBtn">Reset</button>
-                        </div>
-                        <div class="lap-list" id="lapList">
-                            ${laps.map((l, i) => `
-                                <div class="lap-item">
-                                    <span class="lap-num">Lap ${i + 1}</span>
-                                    <span class="lap-time">${formatLapTime(l)}</span>
-                                </div>
+                        &lt;div class=&quot;timer-display&quot; id=&quot;timerDisplay&quot;&gt;${formatLapTime(stopwatchSeconds)}&lt;/div&gt;
+                        &lt;div class=&quot;timer-controls&quot;&gt;
+                            &lt;button id=&quot;timerStartBtn&quot; class=&quot;primary&quot;&gt;${timerRunning ? 'Pause' : 'Start'}&lt;/button&gt;
+                            &lt;button id=&quot;timerLapBtn&quot; ${!timerRunning ? 'disabled style=&quot;opacity:0.4;&quot;' : ''}&gt;Lap&lt;/button&gt;
+                            &lt;button id=&quot;timerResetBtn&quot;&gt;Reset&lt;/button&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;lap-list&quot; id=&quot;lapList&quot;&gt;
+                            ${laps.map((l, i) =&gt; `
+                                &lt;div class=&quot;lap-item&quot;&gt;
+                                    &lt;span class=&quot;lap-num&quot;&gt;Lap ${i + 1}&lt;/span&gt;
+                                    &lt;span class=&quot;lap-time&quot;&gt;${formatLapTime(l)}&lt;/span&gt;
+                                &lt;/div&gt;
                             `).join('')}
-                        </div>
+                        &lt;/div&gt;
                     `;
                 }
 
                 timerPage.innerHTML = html;
 
-                document.querySelectorAll('.timer-tabs .tab').forEach(tab => {
+                document.querySelectorAll('.timer-tabs .tab').forEach(tab =&gt; {
                     tab.addEventListener('click', function() {
                         const newMode = this.dataset.mode;
                         if (newMode === timerMode) return;
-                        if (timerRunning) {
-                            clearInterval(timerInterval);
-                            timerRunning = false;
-                        }
+                        if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
                         timerMode = newMode;
-                        if (timerMode === 'countdown') {
-                            countdownSeconds = countdownTotal || 0;
-                        }
+                        if (timerMode === 'countdown') countdownSeconds = countdownTotal || 0;
                         renderTimer();
                     });
                 });
 
                 const startBtn = document.getElementById('timerStartBtn');
                 const resetBtn = document.getElementById('timerResetBtn');
-
                 if (startBtn) startBtn.addEventListener('click', toggleTimer);
                 if (resetBtn) resetBtn.addEventListener('click', resetTimer);
 
                 if (mode === 'countdown') {
                     const setMin = document.getElementById('setMinutes');
                     const setSec = document.getElementById('setSeconds');
-                    if (setMin && setSec) {
+                    if (setMin &amp;&amp; setSec) {
                         setMin.addEventListener('change', updateCountdownSet);
                         setSec.addEventListener('change', updateCountdownSet);
-                        if (!timerRunning && countdownTotal > 0) {
+                        if (!timerRunning &amp;&amp; countdownTotal &gt; 0) {
                             const mins = Math.floor(countdownTotal / 60);
                             const secs = Math.floor(countdownTotal % 60);
-                            setMin.value = mins;
-                            setSec.value = secs;
+                            setMin.value = mins; setSec.value = secs;
                         }
                     }
                 }
@@ -1133,46 +1486,35 @@
 
             function toggleTimer() {
                 if (timerMode === 'countdown') {
-                    if (countdownTotal <= 0 && !timerRunning) {
+                    if (countdownTotal &lt;= 0 &amp;&amp; !timerRunning) {
                         const mins = parseInt(document.getElementById('setMinutes')?.value) || 0;
                         const secs = parseInt(document.getElementById('setSeconds')?.value) || 0;
                         countdownTotal = mins * 60 + secs;
                         countdownSeconds = countdownTotal;
-                        if (countdownTotal <= 0) return;
+                        if (countdownTotal &lt;= 0) return;
                         const disp = document.getElementById('timerDisplay');
                         if (disp) disp.textContent = formatTime(countdownSeconds);
                     }
-                    if (timerRunning) {
-                        clearInterval(timerInterval);
-                        timerRunning = false;
-                        renderTimer();
-                        return;
-                    }
-                    if (countdownSeconds <= 0) countdownSeconds = countdownTotal;
+                    if (timerRunning) { clearInterval(timerInterval); timerRunning = false; renderTimer(); return; }
+                    if (countdownSeconds &lt;= 0) countdownSeconds = countdownTotal;
                     timerRunning = true;
                     renderTimer();
-                    timerInterval = setInterval(() => {
+                    timerInterval = setInterval(() =&gt; {
                         countdownSeconds--;
                         const disp = document.getElementById('timerDisplay');
                         if (disp) disp.textContent = formatTime(countdownSeconds);
-                        if (countdownSeconds <= 0) {
-                            clearInterval(timerInterval);
-                            timerRunning = false;
+                        if (countdownSeconds &lt;= 0) {
+                            clearInterval(timerInterval); timerRunning = false;
                             if (navigator.vibrate) navigator.vibrate(200);
                             renderTimer();
                         }
                     }, 1000);
                 } else {
-                    if (timerRunning) {
-                        clearInterval(timerInterval);
-                        timerRunning = false;
-                        renderTimer();
-                        return;
-                    }
+                    if (timerRunning) { clearInterval(timerInterval); timerRunning = false; renderTimer(); return; }
                     timerRunning = true;
                     renderTimer();
                     const startTime = Date.now() - stopwatchSeconds * 1000;
-                    timerInterval = setInterval(() => {
+                    timerInterval = setInterval(() =&gt; {
                         stopwatchSeconds = (Date.now() - startTime) / 1000;
                         const disp = document.getElementById('timerDisplay');
                         if (disp) disp.textContent = formatLapTime(stopwatchSeconds);
@@ -1183,41 +1525,316 @@
             function resetTimer() {
                 clearInterval(timerInterval);
                 timerRunning = false;
-                if (timerMode === 'countdown') {
-                    countdownSeconds = countdownTotal || 0;
-                } else {
-                    stopwatchSeconds = 0;
-                    laps = [];
-                    lapCount = 0;
-                }
+                if (timerMode === 'countdown') countdownSeconds = countdownTotal || 0;
+                else { stopwatchSeconds = 0; laps = []; lapCount = 0; }
                 renderTimer();
             }
 
             // ================================================================
-            // ✨ 全新滑动逻辑（修复输入框冲突 + 消除虚位）✨
+            // WEEKEND PLAN PAGE
             // ================================================================
-            const carousel = document.getElementById('carousel');
-            let dragStartX = 0;
-            let dragStartY = 0;
-            let isDragging = false;
-            let isHorizontal = false;
-            let dragStartOffset = 0;
+            function renderWeekend() {
+                let html = '';
 
-            // 判断是否是交互元素（输入框、按钮、复选框等）
-            function isInteractiveElement(el) {
-                const tag = el.tagName.toLowerCase();
-                if (tag === 'input' || tag === 'button' || tag === 'select' || tag === 'textarea') return true;
-                if (el.closest && el.closest('.task-item, .log-entry, .timer-controls, .timer-set, .add-card, .lap-list'))
-                    return false;
-                // 额外检查是否为可编辑区域
-                if (el.isContentEditable) return true;
-                return false;
+                // Deadline slider card
+                // Default slider value: 68 → 68*15 = 1020 min = Sat 12:00
+                const sliderValue = 68;
+                html += `
+                    &lt;div class=&quot;weekend-card&quot;&gt;
+                        &lt;h3&gt;Set Deadline&lt;/h3&gt;
+                        &lt;div class=&quot;slider-display&quot; id=&quot;sliderDisplay&quot;&gt;Sat 12:00&lt;/div&gt;
+                        &lt;div class=&quot;slider-sublabel&quot;&gt;&lt;/div&gt;
+                        &lt;div class=&quot;slider-labels&quot;&gt;
+                            &lt;span&gt;Fri 19:00&lt;/span&gt;
+                            &lt;span class=&quot;mid&quot;&gt;Sat 17:30&lt;/span&gt;
+                            &lt;span&gt;Sun 16:00&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;input type=&quot;range&quot; class=&quot;nt-slider&quot; id=&quot;deadlineSlider&quot; min=&quot;0&quot; max=&quot;180&quot; value=&quot;${sliderValue}&quot; step=&quot;1&quot; /&gt;
+                    &lt;/div&gt;
+                `;
+
+                // Task creation card
+                html += `
+                    &lt;div class=&quot;weekend-card&quot;&gt;
+                        &lt;h3&gt;New Task&lt;/h3&gt;
+                        &lt;div class=&quot;row&quot; style=&quot;display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap;&quot;&gt;
+                            &lt;input type=&quot;text&quot; id=&quot;weekendSubject&quot; placeholder=&quot;Subject&quot; style=&quot;flex:1;min-width:100px;background:#fff;border:1px solid #d0d0d0;padding:10px 12px;font-size:14px;color:#000;outline:none;font-family:Inter,sans-serif;&quot; /&gt;
+                            &lt;input type=&quot;number&quot; id=&quot;weekendDuration&quot; placeholder=&quot;Duration (min)&quot; min=&quot;5&quot; step=&quot;5&quot; style=&quot;width:130px;background:#fff;border:1px solid #d0d0d0;padding:10px 12px;font-size:14px;color:#000;outline:none;font-family:Inter,sans-serif;&quot; /&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;time-info-row&quot; style=&quot;border-top:none;margin-top:0;padding-top:0;&quot;&gt;
+                            &lt;span class=&quot;label&quot;&gt;Latest start&lt;/span&gt;
+                            &lt;span class=&quot;value&quot; id=&quot;latestStartPreview&quot;&gt;—&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;button class=&quot;add-btn&quot; id=&quot;addWeekendBtn&quot; style=&quot;margin-top:10px;&quot;&gt;Add Weekend Task&lt;/button&gt;
+                    &lt;/div&gt;
+                `;
+
+                // Task list card
+                html += `
+                    &lt;div class=&quot;weekend-card&quot; style=&quot;background:#ffffff;padding-left:0;padding-right:0;border-left:none;border-right:none;&quot;&gt;
+                        &lt;div style=&quot;padding:0 16px;&quot;&gt;
+                            &lt;div class=&quot;supervisor-toggle&quot;&gt;
+                                &lt;button id=&quot;supervisorToggleBtn&quot; class=&quot;${supervisorMode ? 'active' : ''}&quot;&gt;${supervisorMode ? '✕ Close View' : 'Supervisor View'}&lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                        &lt;div style=&quot;padding:0 16px;&quot; id=&quot;weekendTaskListWrap&quot;&gt;
+                            ${renderWeekendList()}
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                `;
+
+                weekendPage.innerHTML = html;
+
+                // Bind slider
+                const slider = document.getElementById('deadlineSlider');
+                const sliderDisplay = document.getElementById('sliderDisplay');
+                const latestStartPreview = document.getElementById('latestStartPreview');
+                const durationInput = document.getElementById('weekendDuration');
+
+                function updateSliderPreview() {
+                    const minFromStart = parseInt(slider.value) * 15;
+                    sliderDisplay.textContent = formatWeekendTime(minFromStart);
+                    const dur = parseInt(durationInput.value) || 0;
+                    if (dur &gt; 0) {
+                        const latest = minFromStart - dur;
+                        if (latest &lt; 0) {
+                            latestStartPreview.textContent = 'Impossible — start now';
+                            latestStartPreview.classList.add('warn');
+                        } else {
+                            latestStartPreview.textContent = formatWeekendTime(latest);
+                            latestStartPreview.classList.remove('warn');
+                        }
+                    } else {
+                        latestStartPreview.textContent = '—';
+                        latestStartPreview.classList.remove('warn');
+                    }
+                }
+
+                slider.addEventListener('input', updateSliderPreview);
+                durationInput.addEventListener('input', updateSliderPreview);
+                updateSliderPreview();
+
+                const addWeekendBtn = document.getElementById('addWeekendBtn');
+                if (addWeekendBtn) addWeekendBtn.addEventListener('click', addWeekendTask);
+
+                bindWeekendActions();
+
+                const supBtn = document.getElementById('supervisorToggleBtn');
+                if (supBtn) {
+                    supBtn.addEventListener('click', function() {
+                        supervisorMode = !supervisorMode;
+                        renderWeekend();
+                    });
+                }
             }
 
-            // 设置页面（带过渡）
+            function renderWeekendList() {
+                if (weekendTasks.length === 0) {
+                    return `&lt;div class=&quot;empty-msg&quot;&gt;No weekend tasks yet&lt;/div&gt;`;
+                }
+
+                if (supervisorMode) {
+                    let html = `&lt;div class=&quot;supervisor-list&quot;&gt;`;
+                    for (let i = 0; i &lt; weekendTasks.length; i++) {
+                        const t = weekendTasks[i];
+                        const deadline = t.deadline;
+                        const latestStart = deadline - t.duration;
+                        const remainMin = minutesUntilLatestStart(t);
+                        const status = t.completed ? 'done' : (remainMin &lt; 0 ? 'overdue' : 'pending');
+                        const statusLabel = t.completed ? 'Completed' : (remainMin &lt; 0 ? 'Overdue' : 'Pending');
+                        html += `
+                            &lt;div class=&quot;supervisor-item&quot;&gt;
+                                &lt;div class=&quot;row1&quot;&gt;
+                                    &lt;span class=&quot;name&quot;&gt;${t.subject}&lt;/span&gt;
+                                    &lt;span class=&quot;status ${status}&quot;&gt;${statusLabel}&lt;/span&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;meta&quot;&gt;
+                                    &lt;span&gt;Deadline: &lt;span class=&quot;highlight&quot;&gt;${formatWeekendTime(deadline)}&lt;/span&gt;&lt;/span&gt;
+                                    &lt;span&gt;Duration: ${formatDuration(t.duration)}&lt;/span&gt;
+                                    &lt;span&gt;Latest start: ${latestStart &gt;= 0 ? formatWeekendTime(latestStart) : '—'}&lt;/span&gt;
+                                &lt;/div&gt;
+                                ${t.photos &amp;&amp; t.photos.length ? `
+                                    &lt;div class=&quot;thumbs&quot;&gt;
+                                        ${t.photos.map((p, pi) =&gt; `&lt;img src=&quot;${p}&quot; data-photo=&quot;${i}-${pi}&quot; /&gt;`).join('')}
+                                    &lt;/div&gt;
+                                ` : ''}
+                            &lt;/div&gt;
+                        `;
+                    }
+                    html += `&lt;/div&gt;`;
+                    setTimeout(() =&gt; {
+                        document.querySelectorAll('.supervisor-item .thumbs img').forEach(img =&gt; {
+                            img.addEventListener('click', function() {
+                                openPhotoViewer(this.src);
+                            });
+                        });
+                    }, 0);
+                    return html;
+                }
+
+                let html = `&lt;div class=&quot;task-list&quot;&gt;`;
+                for (let i = 0; i &lt; weekendTasks.length; i++) {
+                    const t = weekendTasks[i];
+                    const latestStart = t.deadline - t.duration;
+                    const remainMin = minutesUntilLatestStart(t);
+                    const overdue = !t.completed &amp;&amp; remainMin &lt; 0;
+                    const soon = !t.completed &amp;&amp; remainMin &gt;= 0 &amp;&amp; remainMin &lt; 30;
+                    const doneClass = t.completed ? 'done' : '';
+
+                    let badgeClass = 'ok';
+                    let badgeText = '';
+                    if (t.completed) {
+                        badgeClass = 'done';
+                        badgeText = '✓ completed';
+                    } else if (overdue) {
+                        badgeClass = 'overdue';
+                        badgeText = formatRemaining(remainMin);
+                    } else if (soon) {
+                        badgeClass = 'now';
+                        badgeText = formatRemaining(remainMin);
+                    } else {
+                        badgeClass = 'ok';
+                        badgeText = formatRemaining(remainMin);
+                    }
+
+                    html += `
+                        &lt;div class=&quot;task-item ${doneClass}&quot; data-wi=&quot;${i}&quot;&gt;
+                            &lt;div class=&quot;top&quot;&gt;
+                                &lt;div class=&quot;info&quot;&gt;
+                                    &lt;span class=&quot;subject&quot;&gt;${t.subject}&lt;/span&gt;
+                                    &lt;span class=&quot;time-target&quot;&gt;${formatDuration(t.duration)} · due ${formatWeekendTime(t.deadline)}&lt;/span&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;actions&quot;&gt;
+                                    &lt;button class=&quot;done-btn&quot; data-wi=&quot;${i}&quot; data-waction=&quot;toggle&quot;&gt;${t.completed ? '↺' : '✓'}&lt;/button&gt;
+                                    &lt;button class=&quot;delete-btn&quot; data-wi=&quot;${i}&quot; data-waction=&quot;delete&quot;&gt;✕&lt;/button&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+                            &lt;div class=&quot;remaining-badge ${badgeClass}&quot; data-remaining-for=&quot;${i}&quot;&gt;${badgeText}&lt;/div&gt;
+                            &lt;div class=&quot;time-info-row&quot; style=&quot;border-top:none;margin-top:2px;padding:4px 0 0;&quot;&gt;
+                                &lt;span class=&quot;label&quot;&gt;Latest start&lt;/span&gt;
+                                &lt;span class=&quot;value ${overdue ? 'warn' : ''}&quot;&gt;${latestStart &gt;= 0 ? formatWeekendTime(latestStart) : 'Already passed'}&lt;/span&gt;
+                            &lt;/div&gt;
+                            ${overdue &amp;&amp; !t.completed ? `
+                                &lt;div class=&quot;reminder-box&quot;&gt;
+                                    &lt;span class=&quot;tag&quot;&gt;LATE&lt;/span&gt;You've passed the latest start time. 
+                                &lt;/div&gt;
+                            ` : ''}
+                            ${soon &amp;&amp; !t.completed ? `
+                                &lt;div class=&quot;reminder-box&quot;&gt;
+                                    &lt;span class=&quot;tag&quot;&gt;SOON&lt;/span&gt;Starting within ${formatDuration(remainMin)}. 
+                                &lt;/div&gt;
+                            ` : ''}
+                            ${!t.completed &amp;&amp; t.duration &gt;= 120 ? `
+                                &lt;div class=&quot;reminder-box&quot;&gt;
+                                    &lt;span class=&quot;tag&quot;&gt;TIPS&lt;/span&gt;Break this into ${Math.ceil(t.duration/45)} blocks of 45 min. Rest 10 min between.
+                                &lt;/div&gt;
+                            ` : ''}
+                            ${!t.completed &amp;&amp; t.photos &amp;&amp; t.photos.length === 0 ? `
+                                &lt;div class=&quot;reminder-box&quot;&gt;
+                                    &lt;span class=&quot;tag&quot;&gt;PROOF&lt;/span&gt;Upload a photo when you're done to keep yourself honest.
+                                &lt;/div&gt;
+                            ` : ''}
+                            &lt;div class=&quot;photo-upload-area&quot;&gt;
+                                &lt;button class=&quot;photo-upload-btn&quot; data-wi=&quot;${i}&quot; data-waction=&quot;upload&quot;&gt;Upload Proof&lt;/button&gt;
+                                &lt;input type=&quot;file&quot; accept=&quot;image/*&quot; data-wi=&quot;${i}&quot; class=&quot;weekend-photo-input&quot; style=&quot;display:none;&quot; /&gt;
+                            &lt;/div&gt;
+                            ${t.photos &amp;&amp; t.photos.length ? `
+                                &lt;div class=&quot;photo-preview&quot;&gt;
+                                    ${t.photos.map((p, pi) =&gt; `&lt;img class=&quot;photo-thumb&quot; src=&quot;${p}&quot; data-photo=&quot;${i}-${pi}&quot; /&gt;`).join('')}
+                                &lt;/div&gt;
+                            ` : ''}
+                        &lt;/div&gt;
+                    `;
+                }
+                html += `&lt;/div&gt;`;
+                return html;
+            }
+
+            function bindWeekendActions() {
+                document.querySelectorAll('[data-waction=&quot;toggle&quot;]').forEach(btn =&gt; {
+                    btn.addEventListener('click', function() {
+                        const i = parseInt(this.dataset.wi);
+                        if (i &lt; 0 || i &gt;= weekendTasks.length) return;
+                        weekendTasks[i].completed = !weekendTasks[i].completed;
+                        saveData();
+                        renderWeekend();
+                    });
+                });
+                document.querySelectorAll('[data-waction=&quot;delete&quot;]').forEach(btn =&gt; {
+                    btn.addEventListener('click', function() {
+                        const i = parseInt(this.dataset.wi);
+                        if (i &lt; 0 || i &gt;= weekendTasks.length) return;
+                        if (confirm(`Delete &quot;${weekendTasks[i].subject}&quot;?`)) {
+                            weekendTasks.splice(i, 1);
+                            saveData();
+                            renderWeekend();
+                        }
+                    });
+                });
+                document.querySelectorAll('[data-waction=&quot;upload&quot;]').forEach(btn =&gt; {
+                    btn.addEventListener('click', function() {
+                        const i = parseInt(this.dataset.wi);
+                        const input = document.querySelector(`.weekend-photo-input[data-wi=&quot;${i}&quot;]`);
+                        if (input) input.click();
+                    });
+                });
+                document.querySelectorAll('.weekend-photo-input').forEach(input =&gt; {
+                    input.addEventListener('change', async function(e) {
+                        const i = parseInt(this.dataset.wi);
+                        const file = e.target.files[0];
+                        if (!file) return;
+                        try {
+                            const base64 = await compressImage(file, 800, 0.7);
+                            if (!weekendTasks[i].photos) weekendTasks[i].photos = [];
+                            weekendTasks[i].photos.push(base64);
+                            saveData();
+                            renderWeekend();
+                        } catch (err) {
+                            console.error(err);
+                            alert('Failed to process image.');
+                        }
+                    });
+                });
+                document.querySelectorAll('.photo-thumb').forEach(img =&gt; {
+                    img.addEventListener('click', function() {
+                        openPhotoViewer(this.src);
+                    });
+                });
+            }
+
+            function addWeekendTask() {
+                const subject = document.getElementById('weekendSubject').value.trim();
+                const duration = parseInt(document.getElementById('weekendDuration').value) || 0;
+                const slider = document.getElementById('deadlineSlider');
+                const deadline = parseInt(slider.value) * 15;
+
+                if (!subject) { alert('Please enter a subject'); return; }
+                if (duration &lt;= 0) { alert('Please enter duration in minutes (e.g. 60)'); return; }
+                if (duration &gt; WINDOW_TOTAL_MIN) { alert('Duration cannot exceed the whole weekend window'); return; }
+
+                const latestStart = deadline - duration;
+                if (latestStart &lt; 0) {
+                    if (!confirm('This task cannot be completed in time if it is not started immediately. Add anyway?')) return;
+                }
+
+                weekendTasks.push({
+                    id: Date.now().toString(),
+                    subject: subject,
+                    duration: duration,
+                    deadline: deadline,
+                    completed: false,
+                    photos: [],
+                    createdAt: Date.now()
+                });
+                saveData();
+                renderWeekend();
+            }
+
+            // ================================================================
+            // Carousel
+            // ================================================================
             function setPage(index, animate = true) {
-                if (isTransitioning || index === currentPage) return;
-                isTransitioning = true;
+                if (index === currentPage &amp;&amp; animate) return;
                 currentPage = index;
                 if (!animate) {
                     track.style.transition = 'none';
@@ -1225,32 +1842,32 @@
                     track.style.transition = 'transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1)';
                 }
                 track.style.transform = `translateX(-${index * 100}%)`;
-                dots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
-                });
-                if (index === 1 && timerPage.innerHTML.trim() === '') {
-                    renderTimer();
-                }
-                // 恢复过渡
+                dots.forEach((dot, i) =&gt; dot.classList.toggle('active', i === index));
+
                 if (!animate) {
                     void track.offsetHeight;
                     track.style.transition = 'transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1)';
                 }
-                setTimeout(() => {
-                    isTransitioning = false;
-                }, 450);
             }
 
-            // --- 触摸事件 ---
+            const carousel = document.getElementById('carousel');
+            let dragStartX = 0, dragStartY = 0;
+            let isDragging = false, isHorizontal = false;
+            let dragStartOffset = 0;
+
+            function isInteractiveElement(el) {
+                if (!el) return false;
+                const tag = el.tagName.toLowerCase();
+                if (tag === 'input' || tag === 'button' || tag === 'select' || tag === 'textarea') return true;
+                if (el.isContentEditable) return true;
+                if (el.closest &amp;&amp; el.closest('input, button, select, textarea, .nt-slider, .photo-upload-btn, .supervisor-toggle, .log-delete-toggle')) return true;
+                return false;
+            }
+
             carousel.addEventListener('touchstart', function(e) {
-                if (isTransitioning) return;
                 const touch = e.touches[0];
                 const target = document.elementFromPoint(touch.clientX, touch.clientY);
-                // 如果点击的是输入框等交互元素，不启动滑动
-                if (isInteractiveElement(target)) {
-                    isDragging = false;
-                    return;
-                }
+                if (isInteractiveElement(target)) { isDragging = false; return; }
                 dragStartX = touch.clientX;
                 dragStartY = touch.clientY;
                 isDragging = true;
@@ -1260,148 +1877,118 @@
             }, { passive: true });
 
             carousel.addEventListener('touchmove', function(e) {
-                if (!isDragging || isTransitioning) return;
+                if (!isDragging) return;
                 const touch = e.touches[0];
                 const dx = touch.clientX - dragStartX;
                 const dy = touch.clientY - dragStartY;
-                // 判断是否为水平滑动（水平位移大于垂直位移，且水平超过10px）
-                if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+                if (Math.abs(dx) &gt; Math.abs(dy) &amp;&amp; Math.abs(dx) &gt; 10) {
                     isHorizontal = true;
                     e.preventDefault();
                     const dampened = dx * 0.6;
                     const offsetPercent = (dampened / carousel.offsetWidth) * 100;
                     let newOffset = dragStartOffset + offsetPercent;
-                    // 边界限制
-                    if (newOffset > 0) newOffset = 0;
-                    if (newOffset < -100) newOffset = -100;
+                    const maxIndex = dots.length - 1;
+                    if (newOffset &gt; 0) newOffset = 0;
+                    if (newOffset &lt; -maxIndex * 100) newOffset = -maxIndex * 100;
                     track.style.transform = `translateX(${newOffset}%)`;
                 }
             }, { passive: false });
 
             carousel.addEventListener('touchend', function(e) {
-                if (!isDragging || isTransitioning) return;
+                if (!isDragging) return;
                 isDragging = false;
                 if (!isHorizontal) return;
                 const dx = e.changedTouches[0].clientX - dragStartX;
                 const threshold = 40;
-                // 计算当前偏移量
-                const transform = track.style.transform;
-                let currentOffset = -currentPage * 100;
-                if (transform && transform.includes('translateX')) {
-                    const match = transform.match(/translateX\((-?\d+\.?\d*)%\)/);
-                    if (match) currentOffset = parseFloat(match[1]);
-                }
-                // 如果偏移量接近边界（左边界0，右边界-100），直接吸附
-                if (currentOffset > -5 && currentOffset < 5) {
-                    setPage(0);
-                } else if (currentOffset < -95 && currentOffset > -105) {
-                    setPage(1);
-                } else if (dx < -threshold && currentPage < 1) {
-                    setPage(1);
-                } else if (dx > threshold && currentPage > 0) {
-                    setPage(0);
-                } else {
-                    setPage(currentPage);
-                }
+                if (dx &lt; -threshold &amp;&amp; currentPage &lt; dots.length - 1) setPage(currentPage + 1);
+                else if (dx &gt; threshold &amp;&amp; currentPage &gt; 0) setPage(currentPage - 1);
+                else setPage(currentPage);
             }, { passive: true });
 
-            // --- 鼠标事件 ---
-            let mouseDown = false;
-            let mouseStartX = 0;
-            let mouseStartOffset = 0;
-
+            let mouseDown = false, mouseStartX = 0, mouseStartOffset = 0;
             carousel.addEventListener('mousedown', function(e) {
-                if (isTransitioning) return;
-                const target = e.target;
-                if (isInteractiveElement(target)) {
-                    mouseDown = false;
-                    return;
-                }
+                if (isInteractiveElement(e.target)) { mouseDown = false; return; }
                 mouseDown = true;
                 mouseStartX = e.clientX;
                 mouseStartOffset = -currentPage * 100;
                 track.style.transition = 'none';
                 e.preventDefault();
             });
-
             document.addEventListener('mousemove', function(e) {
-                if (!mouseDown || isTransitioning) return;
+                if (!mouseDown) return;
                 const dx = e.clientX - mouseStartX;
                 const dampened = dx * 0.6;
                 const offsetPercent = (dampened / carousel.offsetWidth) * 100;
                 let newOffset = mouseStartOffset + offsetPercent;
-                if (newOffset > 0) newOffset = 0;
-                if (newOffset < -100) newOffset = -100;
+                const maxIndex = dots.length - 1;
+                if (newOffset &gt; 0) newOffset = 0;
+                if (newOffset &lt; -maxIndex * 100) newOffset = -maxIndex * 100;
                 track.style.transform = `translateX(${newOffset}%)`;
             });
-
             document.addEventListener('mouseup', function(e) {
                 if (!mouseDown) return;
                 mouseDown = false;
                 const dx = e.clientX - mouseStartX;
-                const transform = track.style.transform;
-                let currentOffset = -currentPage * 100;
-                if (transform && transform.includes('translateX')) {
-                    const match = transform.match(/translateX\((-?\d+\.?\d*)%\)/);
-                    if (match) currentOffset = parseFloat(match[1]);
-                }
-                // 吸附边界
-                if (currentOffset > -5 && currentOffset < 5) {
-                    setPage(0);
-                } else if (currentOffset < -95 && currentOffset > -105) {
-                    setPage(1);
-                } else if (dx < -threshold && currentPage < 1) {
-                    setPage(1);
-                } else if (dx > threshold && currentPage > 0) {
-                    setPage(0);
-                } else {
-                    setPage(currentPage);
-                }
+                const threshold = 40;
+                if (dx &lt; -threshold &amp;&amp; currentPage &lt; dots.length - 1) setPage(currentPage + 1);
+                else if (dx &gt; threshold &amp;&amp; currentPage &gt; 0) setPage(currentPage - 1);
+                else setPage(currentPage);
             });
 
-            // 指示点点击
-            dots.forEach((dot, index) => {
-                dot.addEventListener('click', function() {
-                    if (isTransitioning) return;
-                    setPage(index);
-                });
+            dots.forEach((dot, i) =&gt; {
+                dot.addEventListener('click', function() { setPage(i); });
             });
 
             // ================================================================
-            // 键盘事件
+            // Periodic update of remaining-time badges
             // ================================================================
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && document.activeElement && document.activeElement.tagName === 'INPUT') {
-                    const inputs = ['subjectInput', 'timeInput', 'totalCount'];
-                    if (inputs.includes(document.activeElement.id)) {
-                        addTask();
+            setInterval(() =&gt; {
+                if (currentPage !== 1) return;
+                document.querySelectorAll('[data-remaining-for]').forEach(el =&gt; {
+                    const i = parseInt(el.dataset.remainingFor);
+                    if (isNaN(i) || !weekendTasks[i]) return;
+                    const t = weekendTasks[i];
+                    const remainMin = minutesUntilLatestStart(t);
+                    if (t.completed) {
+                        el.className = 'remaining-badge done';
+                        el.textContent = '✓ completed';
+                    } else if (remainMin &lt; 0) {
+                        el.className = 'remaining-badge overdue';
+                        el.textContent = formatRemaining(remainMin);
+                    } else if (remainMin &lt; 30) {
+                        el.className = 'remaining-badge now';
+                        el.textContent = formatRemaining(remainMin);
+                    } else {
+                        el.className = 'remaining-badge ok';
+                        el.textContent = formatRemaining(remainMin);
                     }
-                }
-            });
+                });
+            }, 30000);
 
             // ================================================================
-            // 初始化
+            // Init
             // ================================================================
             loadData();
             renderTasks();
             renderTimer();
-            // 设置初始状态
-            track.style.transition = 'none';
-            track.style.transform = 'translateX(0%)';
-            void track.offsetHeight;
-            track.style.transition = 'transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1)';
-            currentPage = 0;
-            dots.forEach((dot, i) => dot.classList.toggle('active', i === 0));
+            renderWeekend();
+            setPage(1, false);
 
             celebrationEl.addEventListener('click', function() {
                 this.classList.remove('active');
-                if (celebrationTimer) { clearTimeout(celebrationTimer);
-                    celebrationTimer = null; }
+                if (celebrationTimer) { clearTimeout(celebrationTimer); celebrationTimer = null; }
             });
 
-            // ================================================================
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' &amp;&amp; document.activeElement &amp;&amp; document.activeElement.tagName === 'INPUT') {
+                    const inputs = ['subjectInput', 'timeInput', 'totalCount'];
+                    if (inputs.includes(document.activeElement.id)) addTask();
+                    const wInputs = ['weekendSubject', 'weekendDuration'];
+                    if (wInputs.includes(document.activeElement.id)) addWeekendTask();
+                }
+            });
+
             // Service Worker
-            // ================================================================
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
                     navigator.serviceWorker.register('./sw.js')
@@ -1410,6 +1997,8 @@
                 });
             }
         })();
-    </script>
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
 </body>
 </html>
